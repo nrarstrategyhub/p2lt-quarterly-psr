@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2LT Quarterly Status Reports</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal:        #1e6b6b;
+  --teal-dark:   #154d4d;
+  --teal-mid:    #2a8080;
+  --teal-light:  #e8f4f4;
+  --green:       #2d8a3e;
+  --green-bg:    #e8f5eb;
+  --amber:       #c47a1a;
+  --amber-bg:    #fef3e2;
+  --red:         #c0392b;
+  --red-bg:      #fdecea;
+  --blue:        #1565a0;
+  --blue-bg:     #e8f0fb;
+  --grey:        #8a9a9a;
+  --grey-bg:     #f0f4f4;
+  --white:       #ffffff;
+  --bg:          #eef4f4;
+  --text:        #1a2e2e;
+  --muted:       #5a7070;
+  --border:      #cddede;
+  --shadow:      0 2px 14px rgba(30,107,107,0.09);
+  --shadow-lg:   0 6px 24px rgba(30,107,107,0.16);
+}
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* ── HEADER ── */
+.header {
+  background:var(--teal-dark); color:white; padding:0 36px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 2px 20px rgba(0,0,0,0.25);
+}
+.logo { padding:18px 0; }
+.logo-title { font-family:'Playfair Display',serif; font-size:19px; font-weight:700; }
+.logo-sub   { font-size:11px; opacity:.6; letter-spacing:.8px; text-transform:uppercase; margin-top:2px; }
+.nav { display:flex; gap:2px; }
+.nav-tab {
+  padding:10px 18px; border-radius:8px 8px 0 0;
+  cursor:pointer; font-size:13px; font-weight:500;
+  color:rgba(255,255,255,.55); transition:all .2s;
+  border-bottom:3px solid transparent;
+}
+.nav-tab:hover { color:white; background:rgba(255,255,255,.08); }
+.nav-tab.active { color:white; border-bottom-color:#7dd4c0; background:rgba(255,255,255,.1); }
+
+/* ── MAIN ── */
+.main { max-width:1080px; margin:0 auto; padding:40px 24px 80px; }
+.view { display:none; }
+.view.active { display:block; }
+
+/* ── CONNECTION BANNER ── */
+.conn-banner {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 16px; border-radius:10px; margin-bottom:24px;
+  font-size:13px; font-weight:500;
+}
+.conn-banner.ok      { background:#e8f5eb; color:var(--green); border:1px solid #b8dfc0; }
+.conn-banner.error   { background:var(--red-bg); color:var(--red); border:1px solid #f5c5c2; }
+.conn-banner.loading { background:var(--grey-bg); color:var(--muted); border:1px solid var(--border); }
+.conn-dot { width:8px; height:8px; border-radius:50%; background:currentColor; flex-shrink:0; }
+
+/* ── SECTION HEADER ── */
+.sec-hd { margin-bottom:30px; }
+.sec-hd-row { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+.sec-title { font-family:'Playfair Display',serif; font-size:28px; color:var(--teal-dark); margin-bottom:4px; }
+.sec-sub   { color:var(--muted); font-size:14px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:10px 18px; border-radius:8px; border:none;
+  font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500;
+  cursor:pointer; transition:all .2s; white-space:nowrap;
+}
+.btn-primary   { background:var(--teal); color:white; }
+.btn-primary:hover   { background:var(--teal-dark); transform:translateY(-1px); box-shadow:0 4px 12px rgba(30,107,107,.3); }
+.btn-secondary { background:var(--teal-light); color:var(--teal-dark); }
+.btn-secondary:hover { background:#d5ecec; }
+.btn-ghost  { background:white; color:var(--muted); border:1px solid var(--border); }
+.btn-ghost:hover  { background:var(--grey-bg); }
+.btn-danger { background:#fff0ef; color:var(--red); border:1px solid #f5c5c2; }
+.btn-danger:hover { background:#ffe0de; }
+.btn-sm  { padding:6px 12px; font-size:12px; }
+.btn-lg  { padding:13px 26px; font-size:15px; }
+.btn:disabled { opacity:.45; cursor:not-allowed !important; transform:none !important; box-shadow:none !important; }
+
+/* ── FORM CONTROLS ── */
+.label {
+  display:block; font-size:12px; font-weight:600;
+  color:var(--muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:7px;
+}
+.select {
+  width:100%; padding:12px 40px 12px 14px;
+  border:2px solid var(--border); border-radius:8px;
+  font-family:'DM Sans',sans-serif; font-size:15px; color:var(--text);
+  background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%231e6b6b' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 14px center;
+  appearance:none; outline:none; cursor:pointer; transition:border-color .2s;
+}
+.select:focus { border-color:var(--teal); }
+.textarea {
+  width:100%; min-height:118px; padding:12px 14px;
+  border:2px solid var(--border); border-radius:8px;
+  font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text);
+  resize:vertical; outline:none; transition:border-color .2s; line-height:1.6;
+}
+.textarea:focus   { border-color:var(--teal); }
+.textarea.g:focus { border-color:var(--green); }
+.textarea.a:focus { border-color:var(--amber); }
+.textarea.r:focus { border-color:var(--red); }
+
+/* ── SPINNER ── */
+.spinner {
+  width:18px; height:18px; border-radius:50%;
+  border:2.5px solid rgba(255,255,255,.3);
+  border-top-color:white;
+  animation:spin .7s linear infinite; flex-shrink:0;
+}
+.spinner.dark { border-color:rgba(30,107,107,.2); border-top-color:var(--teal); }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ───────────────────────────
+   SUBMIT VIEW — WIZARD
+─────────────────────────── */
+.wizard { max-width:680px; margin:0 auto; }
+.wiz-prog { margin-bottom:28px; }
+.wiz-prog-meta { display:flex; justify-content:space-between; margin-bottom:8px; }
+.wiz-prog-label { font-size:13px; color:var(--muted); }
+.wiz-prog-pct   { font-size:13px; font-weight:600; color:var(--teal); }
+.prog-track { height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+.prog-fill  { height:100%; background:linear-gradient(90deg, var(--teal-mid), #7dd4c0); border-radius:2px; transition:width .45s cubic-bezier(.4,0,.2,1); }
+
+.wiz-step { display:none; }
+.wiz-step.active { display:block; animation:fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.card { background:white; border-radius:14px; box-shadow:var(--shadow); border:1px solid var(--border); overflow:hidden; }
+
+/* Step 0 */
+.step0 { padding:36px; }
+.step0-title { font-family:'Playfair Display',serif; font-size:24px; color:var(--teal-dark); margin-bottom:6px; }
+.step0-sub   { color:var(--muted); font-size:14px; margin-bottom:28px; }
+.step0-grid  { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:24px; }
+
+/* Initiative step */
+.init-step { padding:36px; }
+.init-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--teal-light); color:var(--teal-dark);
+  padding:4px 12px; border-radius:20px;
+  font-size:11px; font-weight:600; letter-spacing:.5px; text-transform:uppercase;
+  margin-bottom:10px;
+}
+.init-name { font-family:'Playfair Display',serif; font-size:23px; color:var(--teal-dark); margin-bottom:4px; }
+.init-hint  { font-size:13px; color:var(--muted); margin-bottom:24px; }
+
+.rag-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px; }
+.rag-opt input { position:absolute; opacity:0; width:0; height:0; }
+.rag-opt { position:relative; }
+.rag-lbl {
+  display:flex; align-items:center; gap:11px; padding:13px 16px;
+  border:2px solid var(--border); border-radius:10px;
+  cursor:pointer; transition:all .2s; background:white; user-select:none;
+}
+.rag-lbl:hover { border-color:var(--teal-mid); background:var(--teal-light); }
+.rag-pip-lbl { width:16px; height:16px; border-radius:50%; flex-shrink:0; }
+.pip-g { background:var(--green); }
+.pip-a { background:var(--amber); }
+.pip-r { background:var(--red); }
+.pip-b { background:var(--blue); }
+.rag-txt { font-size:13px; font-weight:500; line-height:1.35; }
+.rag-opt input:checked + .rag-lbl { border-width:2px; font-weight:600; }
+.rag-opt .rg:checked + .rag-lbl { border-color:var(--green); background:var(--green-bg); }
+.rag-opt .ra:checked + .rag-lbl { border-color:var(--amber); background:var(--amber-bg); }
+.rag-opt .rr:checked + .rag-lbl { border-color:var(--red);   background:var(--red-bg);   }
+.rag-opt .rb:checked + .rag-lbl { border-color:var(--blue);  background:var(--blue-bg);  }
+
+.cond { display:none; animation:fadeIn .25s ease; margin-bottom:20px; }
+.cond.show { display:block; }
+.cond-label { font-size:14px; font-weight:600; color:var(--text); margin-bottom:3px; }
+.cond-hint  { font-size:13px; color:var(--muted); margin-bottom:9px; }
+
+.wiz-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top:24px; margin-top:24px; border-top:1px solid var(--border);
+}
+
+/* Review */
+.review-header { background:var(--teal-dark); color:white; padding:24px 28px; border-radius:14px 14px 0 0; }
+.review-team   { font-family:'Playfair Display',serif; font-size:22px; margin-bottom:2px; }
+.review-qtr    { font-size:13px; opacity:.75; }
+.review-body   { background:white; border-radius:0 0 14px 14px; }
+.review-row    { display:flex; align-items:flex-start; gap:14px; padding:15px 24px; border-bottom:1px solid #f0f5f5; }
+.review-row:last-child { border-bottom:none; }
+.review-dot      { width:12px; height:12px; border-radius:50%; flex-shrink:0; margin-top:3px; }
+.review-init-name { font-size:14px; font-weight:600; margin-bottom:2px; }
+.review-rag-lbl  { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+.review-text     { font-size:13px; color:var(--muted); margin-top:5px; white-space:pre-wrap; line-height:1.55; }
+.review-footer   { padding:20px 24px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+
+/* ───────────────────────────
+   DASHBOARD VIEW
+─────────────────────────── */
+.dash-filters { display:flex; gap:10px; margin-bottom:26px; flex-wrap:wrap; align-items:center; }
+.filter-select {
+  padding:8px 36px 8px 12px;
+  border:2px solid var(--border); border-radius:8px;
+  font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text);
+  background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231e6b6b' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+  appearance:none; outline:none; cursor:pointer; transition:border-color .2s;
+}
+.filter-select:focus { border-color:var(--teal); }
+
+.empty-state { text-align:center; padding:80px 20px; color:var(--muted); }
+.empty-icon  { font-size:52px; margin-bottom:16px; opacity:.35; }
+.empty-title { font-size:18px; font-weight:600; margin-bottom:6px; color:var(--text); }
+
+.rpt-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:22px; }
+.rpt-card { background:white; border-radius:14px; box-shadow:var(--shadow); border:1px solid var(--border); overflow:hidden; transition:all .2s; }
+.rpt-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-2px); }
+.rpt-hd  { background:var(--teal-dark); color:white; padding:18px 20px; }
+.rpt-team { font-family:'Playfair Display',serif; font-size:17px; margin-bottom:2px; }
+.rpt-meta { font-size:11px; opacity:.7; }
+.rpt-body { padding:14px 18px; }
+.rpt-row  { display:flex; align-items:center; gap:9px; padding:5px 0; border-bottom:1px solid #f0f5f5; }
+.rpt-row:last-child { border-bottom:none; }
+.pip { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.pip.GREEN       { background:var(--green); }
+.pip.AMBER       { background:var(--amber); }
+.pip.RED         { background:var(--red); }
+.pip.COMPLETED   { background:var(--blue); }
+.pip.NOT_STARTED { background:var(--grey); }
+.rpt-init-name { font-size:12px; color:var(--text); flex:1; }
+.rag-tag { font-size:10px; font-weight:700; letter-spacing:.4px; padding:2px 8px; border-radius:10px; text-transform:uppercase; }
+.rag-tag.GREEN       { background:var(--green-bg); color:var(--green); }
+.rag-tag.AMBER       { background:var(--amber-bg); color:var(--amber); }
+.rag-tag.RED         { background:var(--red-bg);   color:var(--red); }
+.rag-tag.COMPLETED   { background:var(--blue-bg);  color:var(--blue); }
+.rag-tag.NOT_STARTED { background:var(--grey-bg);  color:var(--grey); }
+.rpt-footer { padding:12px 18px; border-top:1px solid var(--border); display:flex; gap:7px; justify-content:flex-end; }
+
+/* ───────────────────────────
+   CONFIG VIEW
+─────────────────────────── */
+.cfg-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:20px; }
+.cfg-card { background:white; border-radius:14px; box-shadow:var(--shadow); border:1px solid var(--border); overflow:hidden; }
+.cfg-hd   { background:var(--teal); color:white; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.cfg-name-input { font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:white; background:transparent; border:none; outline:none; flex:1; min-width:0; }
+.cfg-name-input::placeholder { color:rgba(255,255,255,.5); }
+.cfg-badge { background:rgba(255,255,255,.18); border-radius:20px; padding:2px 10px; font-size:11px; white-space:nowrap; }
+.cfg-body  { padding:14px 18px; }
+.cfg-init-list { list-style:none; margin-bottom:12px; }
+.cfg-init-item { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #f0f5f5; }
+.cfg-init-item:last-child { border-bottom:none; }
+.cfg-num { width:22px; height:22px; border-radius:50%; background:var(--teal-light); color:var(--teal-dark); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.cfg-init-input { flex:1; font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text); background:transparent; border:none; outline:none; padding:2px 4px; border-radius:4px; min-width:0; }
+.cfg-init-input:focus { background:var(--teal-light); }
+.cfg-rm-btn { width:20px; height:20px; border-radius:50%; background:#fff0ef; color:var(--red); border:none; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .15s; }
+.cfg-init-item:hover .cfg-rm-btn { opacity:1; }
+.cfg-init-item--stacked { flex-direction:column; align-items:flex-start; padding:10px 0; gap:6px; }
+.cfg-desc-input {
+  width:100%; padding:7px 10px; font-family:'DM Sans',sans-serif; font-size:12px;
+  color:var(--muted); background:var(--grey-bg); border:1px solid var(--border);
+  border-radius:6px; outline:none; resize:vertical; line-height:1.5; transition:border-color .2s;
+}
+.cfg-desc-input:focus { border-color:var(--teal); background:white; }
+.cfg-desc-input::placeholder { color:#aabcbc; font-style:italic; }
+
+/* Initiative description box in wizard */
+.init-desc-box {
+  background:var(--teal-light); border-left:3px solid var(--teal-mid);
+  padding:10px 14px; border-radius:0 8px 8px 0;
+  font-size:13px; color:var(--teal-dark); line-height:1.6;
+  margin-bottom:16px;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position:fixed; inset:0;
+  background:rgba(21,77,77,.52); backdrop-filter:blur(5px);
+  z-index:200; display:none; align-items:center; justify-content:center; padding:24px;
+}
+.modal-overlay.show { display:flex; }
+.modal { background:white; border-radius:16px; max-width:680px; width:100%; max-height:88vh; overflow-y:auto; box-shadow:0 24px 64px rgba(0,0,0,.3); }
+.modal-hd {
+  background:var(--teal-dark); color:white; padding:24px 28px;
+  position:sticky; top:0; z-index:10;
+  display:flex; justify-content:space-between; align-items:flex-start;
+  border-radius:16px 16px 0 0;
+}
+.modal-title { font-family:'Playfair Display',serif; font-size:22px; margin-bottom:3px; }
+.modal-sub   { font-size:13px; opacity:.72; }
+.modal-close { background:rgba(255,255,255,.15); border:none; color:white; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.modal-close:hover { background:rgba(255,255,255,.25); }
+.modal-body { padding:24px 28px; }
+.modal-init { margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--border); }
+.modal-init:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.modal-init-hd { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.modal-init-name { font-weight:600; font-size:15px; flex:1; }
+.modal-rag-badge { font-size:11px; font-weight:700; letter-spacing:.4px; padding:3px 10px; border-radius:12px; text-transform:uppercase; }
+.modal-init-text { font-size:13px; color:var(--muted); background:var(--grey-bg); padding:12px 15px; border-radius:8px; white-space:pre-wrap; line-height:1.65; }
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:24px; right:24px;
+  background:var(--teal-dark); color:white;
+  padding:13px 20px; border-radius:10px;
+  box-shadow:0 8px 24px rgba(0,0,0,.22);
+  font-size:13px; font-weight:500;
+  display:none; align-items:center; gap:9px; z-index:400;
+  animation:fadeIn .3s ease;
+}
+.toast.show { display:flex; }
+.toast.err   { background:var(--red); }
+
+/* ── SETUP NOTICE ── */
+.setup-notice {
+  background:var(--amber-bg); border:1px solid #e8c07a; border-radius:12px;
+  padding:20px 24px; margin-bottom:28px;
+}
+.setup-notice-title { font-size:14px; font-weight:700; color:#7a4d00; margin-bottom:8px; display:flex; align-items:center; gap:7px; }
+.setup-notice p { font-size:13px; color:#7a4d00; line-height:1.65; }
+.setup-notice code { background:rgba(0,0,0,.08); padding:1px 5px; border-radius:4px; font-size:12px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-title">P2LT Quarterly Status Reports</div>
+    <div class="logo-sub">P2 Leadership Team · Natural Resources Access Regulator</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-tab active" onclick="switchTab('submit')">📝&nbsp; Submit Report</div>
+    <div class="nav-tab" onclick="switchTab('dashboard')">📊&nbsp; Dashboard</div>
+    <div class="nav-tab" onclick="switchTab('config')">⚙️&nbsp; Configure</div>
+  </nav>
+</header>
+
+<main class="main">
+
+  <!-- CONNECTION BANNER (shown on all tabs) -->
+  <div class="conn-banner loading" id="conn-banner">
+    <div class="spinner dark"></div>
+    <span id="conn-msg">Connecting to SharePoint…</span>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       SUBMIT
+  ════════════════════════════════════ -->
+  <div id="view-submit" class="view active">
+    <div class="wizard">
+      <div class="sec-hd">
+        <div class="sec-title">Submit Your Team's Quarterly Status Report</div>
+        <div class="sec-sub">For each initiative in your Team Annual Plan (Team Value Offering), select a RAG status and provide a short update on progress, achievements, or any risks to delivery.</div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="wiz-prog" id="wiz-prog" style="display:none">
+        <div class="wiz-prog-meta">
+          <span class="wiz-prog-label" id="prog-label">—</span>
+          <span class="wiz-prog-pct"   id="prog-pct">0%</span>
+        </div>
+        <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      </div>
+
+      <!-- Step 0: Team + Quarter -->
+      <div class="wiz-step active card step0" id="step-0">
+        <div class="step0-title">Let's get started</div>
+        <div class="step0-sub">Select your team and the reporting quarter to begin.</div>
+        <div class="step0-grid">
+          <div>
+            <label class="label">Your Team</label>
+            <select class="select" id="sel-team">
+              <option value="">— Select team —</option>
+            </select>
+          </div>
+          <div>
+            <label class="label">Reporting Quarter</label>
+            <select class="select" id="sel-quarter">
+              <option value="">— Select quarter —</option>
+              <option>Q1 2026 (Jan–Mar)</option>
+              <option>Q2 2026 (Apr–Jun)</option>
+              <option>Q3 2026 (Jul–Sep)</option>
+              <option>Q4 2026 (Oct–Dec)</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end">
+          <button class="btn btn-primary btn-lg" onclick="startWizard()">Start Report →</button>
+        </div>
+      </div>
+
+      <!-- Initiative steps injected here -->
+      <div id="init-steps"></div>
+
+      <!-- Review step -->
+      <div class="wiz-step" id="step-review">
+        <div class="review-header">
+          <div class="review-team" id="rv-team">—</div>
+          <div class="review-qtr"  id="rv-qtr">—</div>
+        </div>
+        <div class="review-body" id="rv-body"></div>
+        <div class="review-footer">
+          <button class="btn btn-ghost" onclick="goBack()">← Back</button>
+          <button class="btn btn-primary btn-lg" id="submit-btn" onclick="submitReport()">
+            ✓&nbsp; Submit Report
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       DASHBOARD
+  ════════════════════════════════════ -->
+  <div id="view-dashboard" class="view">
+    <div class="sec-hd">
+      <div class="sec-hd-row">
+        <div>
+          <div class="sec-title">Submitted Reports</div>
+          <div class="sec-sub">All quarterly status reports from the P2 Leadership Team.</div>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="renderDash()" style="flex-shrink:0">↻ Refresh</button>
+      </div>
+    </div>
+    <div class="dash-filters">
+      <select class="filter-select" id="filt-qtr" onchange="renderDash()">
+        <option value="">All Quarters</option>
+        <option>Q1 2026 (Jan–Mar)</option>
+        <option>Q2 2026 (Apr–Jun)</option>
+        <option>Q3 2026 (Jul–Sep)</option>
+        <option>Q4 2026 (Oct–Dec)</option>
+      </select>
+      <select class="filter-select" id="filt-team" onchange="renderDash()">
+        <option value="">All Teams</option>
+      </select>
+    </div>
+    <div id="dash-content"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       CONFIG
+  ════════════════════════════════════ -->
+  <div id="view-config" class="view">
+    <div class="sec-hd">
+      <div class="sec-hd-row">
+        <div>
+          <div class="sec-title">Configure Teams &amp; Initiatives</div>
+          <div class="sec-sub">Edit team names and initiative labels. Changes save locally to this browser.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm"     onclick="resetConfig()">↺ Reset defaults</button>
+          <button class="btn btn-secondary btn-sm" onclick="addTeam()">+ Add team</button>
+          <button class="btn btn-primary btn-sm"   onclick="saveSpConfig()" id="save-cfg-btn">☁ Save config to SharePoint</button>
+        </div>
+      </div>
+    </div>
+    <div class="cfg-grid" id="cfg-grid"></div>
+  </div>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title" id="mod-team">—</div>
+        <div class="modal-sub"   id="mod-qtr">—</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="mod-body"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="toast-icon">✓</span><span id="toast-msg">Done</span>
+</div>
+
+<script>
+/* ════════════════════════════════════
+   SHAREPOINT CONFIG
+════════════════════════════════════ */
+const SP_SITE     = 'https://environmentnswgov.sharepoint.com/sites/MST_NRAR_P2Leaders';
+const SP_LIST     = 'P2LT Quarterly Status Reports';
+const SP_CFG_LIST = 'P2LT Config';
+const SP_API      = `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_LIST)}')/items`;
+const SP_CFG_API  = `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_CFG_LIST)}')/items`;
+const SP_HEADERS  = { 'Accept': 'application/json;odata=verbose' };
+const SP_REPORTS_FOLDER = `/sites/MST_NRAR_P2Leaders/Shared Documents/02 - P2 Leadership Reporting/0 P2 Quarterly Reporting Dashboard 2026`;
+
+let spReady       = false;
+let spCfgReady    = false;  // true once config list is confirmed reachable
+let entityType    = '';
+let cfgEntityType = '';
+let spCfg         = null;   // config loaded from SharePoint; null = not yet loaded
+let spCfgItemId   = null;   // ID of the single config row in SharePoint
+
+/* ── Get form digest (required for write operations) ── */
+async function getDigest() {
+  const r = await fetch(`${SP_SITE}/_api/contextinfo`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Accept': 'application/json;odata=verbose' }
+  });
+  if (!r.ok) throw new Error('Could not get SharePoint context. Are you logged in?');
+  const d = await r.json();
+  return d.d.GetContextWebInformation.FormDigestValue;
+}
+
+/* ── Test connection, get entity types, load config ── */
+async function connectSP() {
+  const banner = document.getElementById('conn-banner');
+  banner.className = 'conn-banner loading';
+  banner.innerHTML = `<div class="spinner dark"></div><span>Connecting to SharePoint…</span>`;
+
+  // Step 1: submissions list
+  try {
+    const r = await fetch(
+      `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_LIST)}')?$select=ListItemEntityTypeFullName`,
+      { credentials:'include', headers: SP_HEADERS }
+    );
+    if (!r.ok) {
+      const errData = await r.json().catch(()=>({}));
+      throw new Error(errData?.error?.message?.value || `HTTP ${r.status}`);
+    }
+    const d = await r.json();
+    entityType = d.d.ListItemEntityTypeFullName;
+    spReady = true;
+  } catch(e) {
+    spReady = false;
+    banner.className = 'conn-banner error';
+    if (e.message.includes('does not exist')) {
+      banner.innerHTML = `<div class="conn-dot"></div>
+        <span>Submissions list "<strong>${SP_LIST}</strong>" not found. Create it first — see the Setup Guide in the Configure tab.</span>`;
+    } else {
+      banner.innerHTML = `<div class="conn-dot"></div>
+        <span>SharePoint connection failed: ${e.message}. Make sure you're logged into Microsoft 365 in this browser.</span>`;
+    }
+    return;
+  }
+
+  // Step 2: config list + load config
+  try {
+    const r2 = await fetch(
+      `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_CFG_LIST)}')?$select=ListItemEntityTypeFullName`,
+      { credentials:'include', headers: SP_HEADERS }
+    );
+    if (!r2.ok) {
+      const errData = await r2.json().catch(()=>({}));
+      throw new Error(errData?.error?.message?.value || `HTTP ${r2.status}`);
+    }
+    const d2 = await r2.json();
+    cfgEntityType = d2.d.ListItemEntityTypeFullName;
+    spCfgReady = true;
+    await loadSpConfig();  // load config from SharePoint
+  } catch(e) {
+    spCfgReady = false;
+    // Config list missing — not fatal, fall back to local config
+    banner.className = 'conn-banner error';
+    if (e.message.includes('does not exist')) {
+      banner.innerHTML = `<div class="conn-dot"></div>
+        <span>Config list "<strong>${SP_CFG_LIST}</strong>" not found. Create it (see Setup Guide) so config syncs across users. Using local config for now.</span>`;
+    } else {
+      banner.innerHTML = `<div class="conn-dot"></div>
+        <span>Connected to submissions list but config list failed: ${e.message}</span>`;
+    }
+    syncSelects(); renderCfg();
+    return;
+  }
+
+  banner.className = 'conn-banner ok';
+  banner.innerHTML = `<div class="conn-dot"></div><span>Connected to SharePoint · config &amp; submissions loaded</span>`;
+}
+
+/* ── Load config from SharePoint ── */
+async function loadSpConfig() {
+  const url = `${SP_CFG_API}?$select=Id,ConfigJSON&$top=1&$orderby=Created desc`;
+  const r = await fetch(url, { credentials:'include', headers: SP_HEADERS });
+  if (!r.ok) throw new Error(`Config fetch failed: HTTP ${r.status}`);
+  const d = await r.json();
+  if (d.d.results.length) {
+    spCfgItemId = d.d.results[0].Id;
+    spCfg = migrateCfg(JSON.parse(d.d.results[0].ConfigJSON || 'null') || DEFAULT_CFG);
+  } else {
+    spCfgItemId = null;
+    spCfg = null; // no config saved yet — will use DEFAULT_CFG
+  }
+  syncSelects();
+  renderCfg();
+}
+
+/* ── Save config to SharePoint ── */
+async function saveSpConfig() {
+  if (!spCfgReady) { toast('Config list not connected. Check the Setup Guide.', 'err'); return; }
+  const btn = document.getElementById('save-cfg-btn');
+  btn.disabled = true;
+  btn.innerHTML = `<div class="spinner"></div> Saving…`;
+  try {
+    const digest  = await getDigest();
+    const payload = JSON.stringify(getCfg());
+    if (spCfgItemId) {
+      // Update existing item
+      await fetch(`${SP_CFG_API}(${spCfgItemId})`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept':          'application/json;odata=verbose',
+          'Content-Type':    'application/json;odata=verbose',
+          'X-RequestDigest': digest,
+          'X-HTTP-Method':   'MERGE',
+          'IF-MATCH':        '*'
+        },
+        body: JSON.stringify({ '__metadata':{ 'type': cfgEntityType }, 'ConfigJSON': payload })
+      });
+    } else {
+      // Create first item
+      const r = await fetch(SP_CFG_API, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept':          'application/json;odata=verbose',
+          'Content-Type':    'application/json;odata=verbose',
+          'X-RequestDigest': digest,
+        },
+        body: JSON.stringify({ '__metadata':{ 'type': cfgEntityType }, 'Title': 'config', 'ConfigJSON': payload })
+      });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const rd = await r.json();
+      spCfgItemId = rd.d.Id;
+    }
+    spCfg = getCfg(); // update in-memory cache
+    toast('Config saved to SharePoint — all users will see this config on next load.');
+  } catch(e) {
+    toast(`Save failed: ${e.message}`, 'err');
+  }
+  btn.disabled = false;
+  btn.innerHTML = '☁ Save config to SharePoint';
+}
+
+/* ── Fetch submissions ── */
+async function fetchSubs(quarter, teamId) {
+  const filters = [];
+  if (quarter) filters.push(`Quarter eq '${quarter.replace(/'/g,"''")}'`);
+  if (teamId)  filters.push(`TeamID eq '${teamId.replace(/'/g,"''")}'`);
+  const fstr = filters.length ? `&$filter=${filters.join(' and ')}` : '';
+  const url = `${SP_API}?$select=Id,Title,Quarter,TeamID,TeamName,SubmittedAt,InitiativesJSON,ReportURL&$orderby=Created desc${fstr}`;
+  const r = await fetch(url, { credentials:'include', headers: SP_HEADERS });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  const d = await r.json();
+  return d.d.results.map(item => ({
+    id:          item.Id,
+    quarter:     item.Quarter,
+    team:        item.TeamID,
+    teamName:    item.TeamName,
+    submittedAt: item.SubmittedAt,
+    reportUrl:   item.ReportURL || '',
+    initiatives: JSON.parse(item.InitiativesJSON || '[]')
+  }));
+}
+
+/* ── Post new submission ── */
+async function postSub(sub) {
+  const digest = await getDigest();
+  const body = {
+    '__metadata': { 'type': entityType },
+    'Title':           `${sub.team}__${sub.quarter.replace(/[^a-zA-Z0-9]/g,'-')}__${sub.id}`,
+    'Quarter':         sub.quarter,
+    'TeamID':          sub.team,
+    'TeamName':        sub.teamName,
+    'SubmittedAt':     sub.submittedAt,
+    'ReportURL':       sub.reportUrl || '',
+    'InitiativesJSON': JSON.stringify(sub.initiatives)
+  };
+  const r = await fetch(SP_API, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Accept':          'application/json;odata=verbose',
+      'Content-Type':    'application/json;odata=verbose',
+      'X-RequestDigest': digest
+    },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(()=>({}));
+    throw new Error(err?.error?.message?.value || `HTTP ${r.status}`);
+  }
+}
+
+/* ── Delete submission ── */
+async function deleteSub(id) {
+  const digest = await getDigest();
+  const r = await fetch(`${SP_API}(${id})`, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Accept':          'application/json;odata=verbose',
+      'X-RequestDigest': digest,
+      'IF-MATCH':        '*'
+    }
+  });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+}
+
+/* ════════════════════════════════════
+   LOCAL CONFIG (teams + initiatives)
+════════════════════════════════════ */
+const DEFAULT_CFG = [
+  { id:'strategic-policy',            name:'Strategic Policy',              initiatives:inits(9)  },
+  { id:'economics',                   name:'Economics',                     initiatives:inits(5)  },
+  { id:'performance-analytics-ai',   name:'Performance, Analytics & AI',   initiatives:inits(4)  },
+  { id:'strategic-finance',           name:'Strategic Finance',             initiatives:inits(5)  },
+  { id:'strategic-projects-planning', name:'Strategic Projects & Planning', initiatives:inits(12) },
+  { id:'services-assurance',          name:'Services & Assurance',          initiatives:inits(5)  },
+];
+/* Each initiative is { name, desc } — desc is optional context shown in the form */
+function inits(n){ return Array.from({length:n},(_,i)=>({ name:`Initiative ${i+1}`, desc:'' })); }
+/* Migrate old string-format initiatives to {name,desc} objects */
+function migrateCfg(cfg){
+  return cfg.map(team=>({
+    ...team,
+    initiatives: team.initiatives.map(i=> typeof i === 'string' ? { name:i, desc:'' } : i)
+  }));
+}
+function getCfg(){
+  if (spCfg) return spCfg;  // prefer SharePoint config when loaded
+  try { return migrateCfg(JSON.parse(localStorage.getItem('p2_cfg')) || DEFAULT_CFG); } catch { return DEFAULT_CFG; }
+}
+function saveCfg(c){
+  if (spCfg) spCfg = c; else localStorage.setItem('p2_cfg', JSON.stringify(c));
+  syncSelects();
+}
+
+const RAG_COLOR = { GREEN:'#2d8a3e', AMBER:'#c47a1a', RED:'#c0392b', COMPLETED:'#1565a0', NOT_STARTED:'#8a9a9a' };
+const RAG_BG    = { GREEN:'#e8f5eb', AMBER:'#fef3e2', RED:'#fdecea', COMPLETED:'#e8f0fb', NOT_STARTED:'#f0f4f4' };
+const RAG_LABEL = { GREEN:'On Track', AMBER:'At Risk', RED:'Off Track', COMPLETED:'Completed', NOT_STARTED:'Not Started' };
+
+/* ════════════════════════════════════
+   NAV
+════════════════════════════════════ */
+function switchTab(tab){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+tab).classList.add('active');
+  ['submit','dashboard','config'].forEach((t,i)=>{
+    if(t===tab) document.querySelectorAll('.nav-tab')[i].classList.add('active');
+  });
+  if(tab==='dashboard') renderDash();
+  if(tab==='config')    renderCfg();
+}
+
+/* ════════════════════════════════════
+   SELECTS SYNC
+════════════════════════════════════ */
+function syncSelects(){
+  const cfg = getCfg();
+  ['sel-team','filt-team'].forEach(id=>{
+    const el = document.getElementById(id); if(!el) return;
+    const cur = el.value;
+    const isFilter = id==='filt-team';
+    el.innerHTML = isFilter ? '<option value="">All Teams</option>' : '<option value="">— Select team —</option>';
+    cfg.forEach(t=>{ const o=document.createElement('option'); o.value=t.id; o.textContent=t.name; el.appendChild(o); });
+    el.value = cur;
+  });
+}
+
+/* ════════════════════════════════════
+   WIZARD
+════════════════════════════════════ */
+let wiz = { team:null, quarter:'', step:0, resp:{} };
+
+function startWizard(){
+  const teamId  = document.getElementById('sel-team').value;
+  const quarter = document.getElementById('sel-quarter').value;
+  if(!teamId || !quarter){ toast('Please select a team and quarter.','err'); return; }
+  wiz.team    = getCfg().find(t=>t.id===teamId);
+  wiz.quarter = quarter;
+  wiz.step    = 1;
+  wiz.resp    = {};
+  buildInitSteps();
+  showStep(1);
+}
+
+function buildInitSteps(){
+  const wrap = document.getElementById('init-steps');
+  wrap.innerHTML = '';
+  wiz.team.initiatives.forEach((init,idx)=>{
+    const n    = idx+1;
+    const name = init.name || init; // handle legacy string format gracefully
+    const desc = init.desc || '';
+    const d = document.createElement('div');
+    d.className = 'wiz-step card init-step';
+    d.id = `step-init-${n}`;
+    d.innerHTML = `
+      <div class="init-badge">Initiative ${n} of ${wiz.team.initiatives.length}</div>
+      <div class="init-name">${name}</div>
+      ${desc ? `<div class="init-desc-box">${esc(desc)}</div>` : ''}
+      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
+      <div class="rag-grid">
+        <div class="rag-opt">
+          <input type="radio" class="rg" name="rag-${n}" id="rg-${n}-g" value="GREEN"     onchange="onRag(${n})">
+          <label class="rag-lbl" for="rg-${n}-g"><span class="rag-pip-lbl pip-g"></span><span class="rag-txt">GREEN<br><small style="font-weight:400;opacity:.7">On Track</small></span></label>
+        </div>
+        <div class="rag-opt">
+          <input type="radio" class="ra" name="rag-${n}" id="rg-${n}-a" value="AMBER"     onchange="onRag(${n})">
+          <label class="rag-lbl" for="rg-${n}-a"><span class="rag-pip-lbl pip-a"></span><span class="rag-txt">AMBER<br><small style="font-weight:400;opacity:.7">At Risk</small></span></label>
+        </div>
+        <div class="rag-opt">
+          <input type="radio" class="rr" name="rag-${n}" id="rg-${n}-r" value="RED"       onchange="onRag(${n})">
+          <label class="rag-lbl" for="rg-${n}-r"><span class="rag-pip-lbl pip-r"></span><span class="rag-txt">RED<br><small style="font-weight:400;opacity:.7">Off Track</small></span></label>
+        </div>
+        <div class="rag-opt">
+          <input type="radio" class="rb" name="rag-${n}" id="rg-${n}-b" value="COMPLETED" onchange="onRag(${n})">
+          <label class="rag-lbl" for="rg-${n}-b"><span class="rag-pip-lbl pip-b"></span><span class="rag-txt">COMPLETED<br><small style="font-weight:400;opacity:.7">&nbsp;</small></span></label>
+        </div>
+      </div>
+      <div class="cond" id="cond-g-${n}">
+        <div class="cond-label">✅ Achievements this quarter</div>
+        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
+        <textarea class="textarea g" id="txt-g-${n}" placeholder="• Delivered X&#10;• Completed Y&#10;• Status changed from…"></textarea>
+      </div>
+      <div class="cond" id="cond-a-${n}">
+        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
+        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
+        <textarea class="textarea a" id="txt-a-${n}" placeholder="• Issue: describe the risk&#10;• Recovery action 1&#10;• Recovery action 2&#10;• Target date to return to green"></textarea>
+      </div>
+      <div class="wiz-nav">
+        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
+        <button class="btn btn-primary" onclick="next(${n})">Next →</button>
+      </div>`;
+    wrap.appendChild(d);
+  });
+}
+
+function onRag(n){
+  const v = document.querySelector(`input[name="rag-${n}"]:checked`)?.value;
+  document.getElementById(`cond-g-${n}`).classList.toggle('show', v==='GREEN'||v==='COMPLETED');
+  document.getElementById(`cond-a-${n}`).classList.toggle('show', v==='AMBER'||v==='RED');
+}
+
+function showStep(n){
+  document.querySelectorAll('.wiz-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('wiz-prog').style.display = n===0 ? 'none' : 'block';
+  if(n===0){ document.getElementById('step-0').classList.add('active'); return; }
+  const total = wiz.team.initiatives.length;
+  if(n<=total){
+    document.getElementById(`step-init-${n}`).classList.add('active');
+    const r = wiz.resp[n];
+    if(r){
+      const rid = {GREEN:'g',AMBER:'a',RED:'r',COMPLETED:'b'}[r.rag];
+      const radio = document.getElementById(`rg-${n}-${rid}`);
+      if(radio){ radio.checked=true; onRag(n); }
+      const tg = document.getElementById(`txt-g-${n}`); if(tg) tg.value=r.tg||'';
+      const ta = document.getElementById(`txt-a-${n}`); if(ta) ta.value=r.ta||'';
+    }
+    updProg(n,total);
+  } else {
+    document.getElementById('step-review').classList.add('active');
+    updProg(total,total);
+    buildReview();
+  }
+  wiz.step = n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updProg(cur,total){
+  const pct = Math.round(cur/total*100);
+  document.getElementById('prog-label').textContent = cur<=total ? `Initiative ${cur} of ${total}` : 'Review & Submit';
+  document.getElementById('prog-pct').textContent   = pct+'%';
+  document.getElementById('prog-fill').style.width  = pct+'%';
+}
+
+function next(n){
+  const rag = document.querySelector(`input[name="rag-${n}"]:checked`)?.value;
+  if(!rag){ toast('Please select a RAG status to continue.','err'); return; }
+  const tg = document.getElementById(`txt-g-${n}`)?.value.trim()||'';
+  const ta = document.getElementById(`txt-a-${n}`)?.value.trim()||'';
+  if((rag==='GREEN'||rag==='COMPLETED')&&!tg){ toast('Please add achievements before continuing.','err'); return; }
+  if((rag==='AMBER'||rag==='RED')&&!ta)       { toast('Please add a Go-to-Green plan before continuing.','err'); return; }
+  wiz.resp[n] = { rag, tg, ta };
+  showStep(n+1);
+}
+
+function goBack(){
+  if(wiz.step<=1){ resetWiz(); return; }
+  showStep(wiz.step-1);
+}
+
+function resetWiz(){
+  wiz = { team:null, quarter:'', step:0, resp:{} };
+  document.getElementById('init-steps').innerHTML='';
+  showStep(0);
+}
+
+function buildReview(){
+  document.getElementById('rv-team').textContent = wiz.team.name;
+  document.getElementById('rv-qtr').textContent  = wiz.quarter;
+  document.getElementById('rv-body').innerHTML   = wiz.team.initiatives.map((init,idx)=>{
+    const n=idx+1, r=wiz.resp[n]||{}, rag=r.rag||'NOT_STARTED';
+    const iname = init.name||init;
+    const text=(rag==='GREEN'||rag==='COMPLETED')?r.tg:r.ta;
+    return `<div class="review-row">
+      <div class="review-dot" style="background:${RAG_COLOR[rag]}"></div>
+      <div style="flex:1">
+        <div class="review-init-name">${iname}</div>
+        <div class="review-rag-lbl" style="color:${RAG_COLOR[rag]}">${rag.replace('_',' ')} — ${RAG_LABEL[rag]}</div>
+        ${text?`<div class="review-text">${esc(text)}</div>`:''}
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="showStep(${n})">Edit</button>
+    </div>`;
+  }).join('');
+}
+
+async function submitReport(){
+  if(!spReady){ toast('SharePoint is not connected. Check the connection banner at the top.','err'); return; }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = `<div class="spinner"></div> Uploading report…`;
+  const sub = {
+    id: Date.now(),
+    quarter:     wiz.quarter,
+    team:        wiz.team.id,
+    teamName:    wiz.team.name,
+    submittedAt: new Date().toISOString(),
+    reportUrl:   '',
+    initiatives: wiz.team.initiatives.map((init,idx)=>{
+      const n=idx+1, r=wiz.resp[n]||{}, rag=r.rag||'NOT_STARTED';
+      const text=(rag==='GREEN'||rag==='COMPLETED')?r.tg:r.ta;
+      return { name: init.name||init, rag, text:text||'' };
+    })
+  };
+  try {
+    // Step 1: upload styled report card to SharePoint document library
+    btn.innerHTML = `<div class="spinner"></div> Uploading report card…`;
+    sub.reportUrl = await uploadReportToSP(sub);
+    // Step 2: save submission data to SharePoint list
+    btn.innerHTML = `<div class="spinner"></div> Saving submission…`;
+    await postSub(sub);
+    toast('Report submitted — your report card is now live in SharePoint.');
+    btn.disabled = false;
+    btn.innerHTML = '✓&nbsp; Submit Report';
+    setTimeout(()=>resetWiz(), 1800);
+  } catch(e) {
+    toast(`Submit failed: ${e.message}`,'err');
+    btn.disabled = false;
+    btn.innerHTML = '✓&nbsp; Submit Report';
+  }
+}
+
+/* ════════════════════════════════════
+   SHAREPOINT REPORT UPLOAD
+════════════════════════════════════ */
+async function ensureReportsFolder() {
+  const checkUrl = `${SP_SITE}/_api/web/GetFolderByServerRelativeUrl('${encodeURIComponent(SP_REPORTS_FOLDER)}')`;
+  const r = await fetch(checkUrl, { credentials:'include', headers: SP_HEADERS });
+  if (!r.ok) {
+    // Folder doesn't exist — create it
+    const digest = await getDigest();
+    const cr = await fetch(`${SP_SITE}/_api/web/folders`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept':          'application/json;odata=verbose',
+        'Content-Type':    'application/json;odata=verbose',
+        'X-RequestDigest': digest
+      },
+      body: JSON.stringify({ '__metadata':{ 'type':'SP.Folder' }, 'ServerRelativeUrl': SP_REPORTS_FOLDER })
+    });
+    if (!cr.ok) throw new Error('Could not create P2LT Reports folder in document library.');
+  }
+}
+
+async function uploadReportToSP(sub) {
+  await ensureReportsFolder();
+  const reportHtml = generateReportHTML(sub);
+  const fileName   = `${sub.teamName.replace(/[^a-zA-Z0-9]/g,'-')}_${sub.quarter.replace(/[^a-zA-Z0-9]/g,'-')}.html`;
+  const digest     = await getDigest();
+  const uploadUrl  = `${SP_SITE}/_api/web/GetFolderByServerRelativeUrl('${encodeURIComponent(SP_REPORTS_FOLDER)}')/Files/add(overwrite=true,url='${encodeURIComponent(fileName)}')`;
+  const r = await fetch(uploadUrl, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Accept':          'application/json;odata=verbose',
+      'X-RequestDigest': digest,
+      'Content-Type':    'text/html'
+    },
+    body: reportHtml
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(()=>({}));
+    throw new Error(err?.error?.message?.value || `File upload failed: HTTP ${r.status}`);
+  }
+  // Return the direct viewable URL
+  return `${SP_SITE}/Shared%20Documents/02%20-%20P2%20Leadership%20Reporting/0%20P2%20Quarterly%20Reporting%20Dashboard%202026/${encodeURIComponent(fileName)}`;
+}
+
+/* ════════════════════════════════════
+   REPORT HTML + DOWNLOAD (admin use)
+════════════════════════════════════ */
+function generateReportHTML(sub){
+  const initsHTML = sub.initiatives.map(i=>`
+    <div style="background:white;border-radius:10px;padding:18px 22px;margin-bottom:14px;border:1px solid #cddede;box-shadow:0 2px 8px rgba(30,107,107,.06)">
+      <div style="display:flex;align-items:center;gap:11px;margin-bottom:${i.text?'10px':'0'}">
+        <div style="width:13px;height:13px;border-radius:50%;background:${RAG_COLOR[i.rag]};flex-shrink:0"></div>
+        <div style="font-size:15px;font-weight:700;color:#154d4d;flex:1">${i.name}</div>
+        <div style="background:${RAG_BG[i.rag]};color:${RAG_COLOR[i.rag]};font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:10px;text-transform:uppercase;white-space:nowrap">${i.rag.replace('_',' ')} — ${RAG_LABEL[i.rag]}</div>
+      </div>
+      ${i.text?`<div style="font-size:13px;color:#4a6060;background:#f4fafa;padding:11px 14px;border-radius:7px;white-space:pre-wrap;line-height:1.65">${esc(i.text)}</div>`:''}
+    </div>`).join('');
+
+  const legend = [
+    ['#2d8a3e','GREEN — On Track'],['#c47a1a','AMBER — At Risk'],
+    ['#c0392b','RED — Off Track'], ['#1565a0','COMPLETED']
+  ].map(([c,l])=>`<div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:${c}"></div><span style="font-size:11px;opacity:.82">${l}</span></div>`).join('');
+
+  const submitted = new Date(sub.submittedAt).toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  const html=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>${sub.teamName} – ${sub.quarter}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+</head><body style="margin:0;font-family:'DM Sans',sans-serif;background:#eef4f4;color:#1a2e2e">
+<div style="max-width:740px;margin:40px auto;padding:0 20px 60px">
+  <div style="background:#154d4d;color:white;padding:30px 34px;border-radius:14px 14px 0 0">
+    <div style="font-size:11px;letter-spacing:.9px;text-transform:uppercase;opacity:.58;margin-bottom:6px">P2 Leadership Team · Quarterly Status Report</div>
+    <div style="font-family:'Playfair Display',serif;font-size:30px;margin-bottom:3px">${sub.teamName}</div>
+    <div style="font-size:14px;opacity:.8;margin-bottom:18px">Reporting Period: ${sub.quarter}</div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap">${legend}</div>
+  </div>
+  <div style="background:#e4efef;padding:22px 34px 30px;border-radius:0 0 14px 14px">${initsHTML}</div>
+  <div style="text-align:center;margin-top:20px;font-size:11px;color:#8a9a9a">Generated ${submitted}</div>
+</div></body></html>`;
+
+  return html;
+}
+
+function downloadReport(sub){
+  const html = generateReportHTML(sub);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  a.download = `${sub.teamName.replace(/[^a-zA-Z0-9]/g,'-')}_${sub.quarter.replace(/[^a-zA-Z0-9]/g,'-')}.html`;
+  a.click();
+}
+
+/* ════════════════════════════════════
+   DASHBOARD
+════════════════════════════════════ */
+async function renderDash(){
+  const el   = document.getElementById('dash-content');
+  const qf   = document.getElementById('filt-qtr')?.value  || '';
+  const tf   = document.getElementById('filt-team')?.value || '';
+  if(!spReady){
+    el.innerHTML=`<div class="empty-state"><div class="empty-icon">🔌</div><div class="empty-title">SharePoint not connected</div><div style="font-size:14px">Check the banner at the top of the page.</div></div>`;
+    return;
+  }
+  el.innerHTML=`<div class="empty-state"><div class="empty-icon"><div class="spinner dark" style="width:36px;height:36px;margin:0 auto"></div></div><div class="empty-title" style="margin-top:12px">Loading reports…</div></div>`;
+  try {
+    const subs = await fetchSubs(qf, tf);
+    if(!subs.length){
+      el.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">No reports found</div><div style="font-size:14px">No submissions match the current filters.</div></div>`;
+      return;
+    }
+    el.innerHTML=`<div class="rpt-grid">${subs.map(s=>`
+      <div class="rpt-card">
+        <div class="rpt-hd">
+          <div class="rpt-team">${s.teamName}</div>
+          <div class="rpt-meta">${s.quarter} · Submitted ${new Date(s.submittedAt).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})}</div>
+        </div>
+        <div class="rpt-body">
+          ${s.initiatives.map(i=>`
+            <div class="rpt-row">
+              <div class="pip ${i.rag}"></div>
+              <div class="rpt-init-name">${i.name}</div>
+              <div class="rag-tag ${i.rag}">${i.rag.replace('_',' ')}</div>
+            </div>`).join('')}
+        </div>
+        <div class="rpt-footer">
+          <button class="btn btn-danger btn-sm"  onclick="deleteReport(${s.id})">🗑</button>
+          <button class="btn btn-ghost btn-sm"   onclick="dlExisting(${JSON.stringify(s).replace(/"/g,'&quot;')})">⬇ Download</button>
+          ${s.reportUrl ? `<a class="btn btn-secondary btn-sm" href="${s.reportUrl}" target="_blank" rel="noopener">📄 View Report</a>` : ''}
+          <button class="btn btn-primary btn-sm" onclick="openModal(${JSON.stringify(s).replace(/"/g,'&quot;')})">Details →</button>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  } catch(e) {
+    el.innerHTML=`<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Could not load reports</div><div style="font-size:14px">${e.message}</div></div>`;
+  }
+}
+
+function openModal(sub){
+  if(typeof sub === 'string') sub = JSON.parse(sub);
+  document.getElementById('mod-team').textContent = sub.teamName;
+  document.getElementById('mod-qtr').textContent  = sub.quarter;
+  document.getElementById('mod-body').innerHTML   = sub.initiatives.map(i=>`
+    <div class="modal-init">
+      <div class="modal-init-hd">
+        <div class="pip ${i.rag}" style="width:11px;height:11px"></div>
+        <div class="modal-init-name">${i.name}</div>
+        <div class="modal-rag-badge" style="background:${RAG_BG[i.rag]};color:${RAG_COLOR[i.rag]}">${i.rag.replace('_',' ')}</div>
+      </div>
+      ${i.text
+        ?`<div class="modal-init-text">${esc(i.text)}</div>`
+        :`<div style="font-size:13px;color:#aaa;font-style:italic">No narrative provided.</div>`}
+    </div>`).join('');
+  document.getElementById('modal-overlay').classList.add('show');
+}
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('show'); }
+document.getElementById('modal-overlay').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeModal(); });
+
+async function deleteReport(id){
+  if(!confirm('Delete this report from SharePoint? This cannot be undone.')) return;
+  try {
+    await deleteSub(id);
+    toast('Report deleted.');
+    renderDash();
+  } catch(e) { toast(`Delete failed: ${e.message}`,'err'); }
+}
+function dlExisting(sub){ if(typeof sub==='string') sub=JSON.parse(sub); downloadReport(sub); }
+
+/* ════════════════════════════════════
+   CONFIG
+════════════════════════════════════ */
+function renderCfg(){
+  const cfg = getCfg();
+  document.getElementById('cfg-grid').innerHTML = `
+    <div style="grid-column:1/-1">
+      <div class="setup-notice">
+        <div class="setup-notice-title">📋 SharePoint List Setup Guide</div>
+        <p>Before using this tool for the first time, create a SharePoint List at your site with these exact settings:</p>
+        <p style="margin-top:10px"><strong>List 1 — Submissions:</strong> <code>P2LT Quarterly Status Reports</code></p>
+        <p style="margin-top:6px">Add these columns (in addition to the default Title column):</p>
+        <p style="margin-top:4px;padding-left:12px">
+          <code>Quarter</code> — Single line of text<br>
+          <code>TeamID</code> — Single line of text<br>
+          <code>TeamName</code> — Single line of text<br>
+          <code>SubmittedAt</code> — Single line of text<br>
+          <code>ReportURL</code> — Single line of text<br>
+          <code>InitiativesJSON</code> — Multiple lines of text (plain text, not rich text)
+        </p>
+        <p style="margin-top:12px"><strong>List 2 — Config:</strong> <code>P2LT Config</code></p>
+        <p style="margin-top:4px;padding-left:12px">
+          <code>ConfigJSON</code> — Multiple lines of text (plain text, not rich text)
+        </p>
+        <p style="margin-top:12px">Once both lists exist, refresh this page — the banner should turn green. Then fill in your team and initiative details below and click <strong>☁ Save config to SharePoint</strong>. All users will see the same config from that point on.</p>
+      </div>
+    </div>
+    ${cfg.map((team,ti)=>`
+    <div class="cfg-card">
+      <div class="cfg-hd">
+        <input class="cfg-name-input" value="${team.name}" onchange="updateTeamName(${ti},this.value)" placeholder="Team name">
+        <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
+          <div class="cfg-badge">${team.initiatives.length} initiatives</div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.18);color:white;padding:3px 9px;border-radius:6px" onclick="removeTeam(${ti})">✕</button>
+        </div>
+      </div>
+      <div class="cfg-body">
+        <ul class="cfg-init-list">
+          ${team.initiatives.map((init,ii)=>`
+            <li class="cfg-init-item cfg-init-item--stacked">
+              <div style="display:flex;align-items:center;gap:8px;width:100%">
+                <div class="cfg-num">${ii+1}</div>
+                <input class="cfg-init-input cfg-init-name" value="${esc(init.name||init)}" onchange="updateInitName(${ti},${ii},this.value)" placeholder="Initiative name" style="font-weight:600">
+                <button class="cfg-rm-btn" onclick="removeInit(${ti},${ii})">−</button>
+              </div>
+              <div style="padding-left:30px;width:100%">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(${ti},${ii},this.value)" placeholder="Short description shown to users in the form (optional)">${esc(init.desc||'')}</textarea>
+              </div>
+            </li>`).join('')}
+        </ul>
+        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="addInit(${ti})">+ Add initiative</button>
+      </div>
+    </div>`).join('')}`;
+}
+
+function updateTeamName(ti,v)      { const c=getCfg(); c[ti].name=v; saveCfg(c); }
+function updateInitName(ti,ii,v)   { const c=getCfg(); c[ti].initiatives[ii].name=v; saveCfg(c); }
+function updateInitDesc(ti,ii,v)   { const c=getCfg(); c[ti].initiatives[ii].desc=v; saveCfg(c); }
+function addInit(ti)               { const c=getCfg(); c[ti].initiatives.push({ name:`Initiative ${c[ti].initiatives.length+1}`, desc:'' }); saveCfg(c); renderCfg(); }
+function removeInit(ti,ii)         { const c=getCfg(); c[ti].initiatives.splice(ii,1); saveCfg(c); renderCfg(); }
+function addTeam()                 { const c=getCfg(); c.push({id:'team-'+Date.now(),name:'New Team',initiatives:[{name:'Initiative 1',desc:''}]}); saveCfg(c); renderCfg(); }
+function removeTeam(ti)            { if(!confirm('Remove this team and all its initiatives?')) return; const c=getCfg(); c.splice(ti,1); saveCfg(c); renderCfg(); }
+function resetConfig()             { if(!confirm('Reset to default teams and initiatives?\nThis only affects your local view — it does NOT update SharePoint.')) return; spCfg = null; localStorage.removeItem('p2_cfg'); renderCfg(); syncSelects(); toast('Config reset to local defaults. Hit Save to SharePoint if you want to push this.'); }
+
+/* ════════════════════════════════════
+   UTILS
+════════════════════════════════════ */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(msg, type='ok', dur=4000){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast-icon').textContent = type==='err' ? '⚠' : '✓';
+  t.className = 'toast show' + (type==='err' ? ' err' : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+/* ════════════════════════════════════
+   INIT
+════════════════════════════════════ */
+syncSelects();
+renderCfg();
+connectSP();
+</script>
+</body>
+</html>
