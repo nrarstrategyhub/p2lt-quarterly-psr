@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>P2LT Quarterly Status Reports</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<script src="https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -492,22 +493,62 @@ body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text)
 
 <script>
 /* ════════════════════════════════════
-   SHAREPOINT CONFIG
+   MSAL + SHAREPOINT CONFIG
 ════════════════════════════════════ */
+const MSAL_CONFIG = {
+  auth: {
+    clientId:    'd8fd44be-6263-4e73-97cd-4313ea98efec',
+    authority:   'https://login.microsoftonline.com/96ef8821-2a39-471c-b89a-67b0833dd3b9',
+    redirectUri: window.location.origin + window.location.pathname
+  },
+  cache: { cacheLocation: 'sessionStorage', storeAuthStateInCookie: false }
+};
+const msalApp    = new msal.PublicClientApplication(MSAL_CONFIG);
+const SP_SCOPE   = ['https://environmentnswgov.sharepoint.com/Sites.ReadWrite.All'];
+
 const SP_SITE     = 'https://environmentnswgov.sharepoint.com/sites/MST_NRAR_P2Leaders';
 const SP_LIST     = 'P2LT Quarterly Status Reports';
 const SP_CFG_LIST = 'P2LT Config';
 const SP_API      = `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_LIST)}')/items`;
 const SP_CFG_API  = `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_CFG_LIST)}')/items`;
-const SP_HEADERS  = { 'Accept': 'application/json;odata=verbose' };
 const SP_REPORTS_FOLDER = `/sites/MST_NRAR_P2Leaders/Shared Documents/02 - P2 Leadership Reporting/0 P2 Quarterly Reporting Dashboard 2026`;
 
 let spReady       = false;
-let spCfgReady    = false;  // true once config list is confirmed reachable
+let spCfgReady    = false;
 let entityType    = '';
 let cfgEntityType = '';
-let spCfg         = null;   // config loaded from SharePoint; null = not yet loaded
-let spCfgItemId   = null;   // ID of the single config row in SharePoint
+let spCfg         = null;
+let spCfgItemId   = null;
+let accessToken   = null;
+
+/* ── Get MSAL access token (silent first, popup fallback) ── */
+async function getToken() {
+  await msalApp.initialize();
+  const accounts = msalApp.getAllAccounts();
+  if (accounts.length === 0) throw new Error('NOT_SIGNED_IN');
+  try {
+    const res = await msalApp.acquireTokenSilent({ scopes: SP_SCOPE, account: accounts[0] });
+    return res.accessToken;
+  } catch(e) {
+    const res = await msalApp.acquireTokenPopup({ scopes: SP_SCOPE });
+    return res.accessToken;
+  }
+}
+
+/* ── Auth headers using bearer token instead of cookies ── */
+async function authHeaders(extra={}) {
+  if (!accessToken) accessToken = await getToken();
+  return { 'Accept': 'application/json;odata=verbose', 'Authorization': `Bearer ${accessToken}`, ...extra };
+}
+
+/* ── Get form digest using bearer token ── */
+async function getDigest() {
+  const hdrs = await authHeaders({ 'Content-Type': 'application/json' });
+  const r = await fetch(`${SP_SITE}/_api/contextinfo`, { method:'POST', headers: hdrs });
+  if (!r.ok) throw new Error('Could not get SharePoint context.');
+  const d = await r.json();
+  return d.d.GetContextWebInformation.FormDigestValue;
+}
 
 /* ── Get form digest (required for write operations) ── */
 async function getDigest() {
@@ -521,75 +562,86 @@ async function getDigest() {
   return d.d.GetContextWebInformation.FormDigestValue;
 }
 
-/* ── Test connection, get entity types, load config ── */
+/* ── Sign in with Microsoft + connect to SharePoint ── */
 async function connectSP() {
   const banner = document.getElementById('conn-banner');
-  banner.className = 'conn-banner loading';
-  banner.innerHTML = `<div class="spinner dark"></div><span>Connecting to SharePoint…</span>`;
+  await msalApp.initialize();
 
-  // Step 1: submissions list
-  try {
-    const r = await fetch(
-      `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_LIST)}')?$select=ListItemEntityTypeFullName`,
-      { credentials:'include', headers: SP_HEADERS }
-    );
-    if (!r.ok) {
-      const errData = await r.json().catch(()=>({}));
-      throw new Error(errData?.error?.message?.value || `HTTP ${r.status}`);
-    }
-    const d = await r.json();
-    entityType = d.d.ListItemEntityTypeFullName;
-    spReady = true;
-  } catch(e) {
-    spReady = false;
-    banner.className = 'conn-banner error';
-    if (e.message.includes('does not exist')) {
-      banner.innerHTML = `<div class="conn-dot"></div>
-        <span>Submissions list "<strong>${SP_LIST}</strong>" not found. Create it first — see the Setup Guide in the Configure tab.</span>`;
-    } else {
-      banner.innerHTML = `<div class="conn-dot"></div>
-        <span>SharePoint connection failed: ${e.message}. Make sure you're logged into Microsoft 365 in this browser.</span>`;
-    }
+  // Handle redirect response if coming back from login
+  await msalApp.handleRedirectPromise().catch(()=>{});
+
+  const accounts = msalApp.getAllAccounts();
+  if (accounts.length === 0) {
+    // Not signed in — show sign in button
+    banner.className = 'conn-banner loading';
+    banner.innerHTML = `
+      <span style="font-size:16px">🔐</span>
+      <span>Sign in with your NRAR Microsoft 365 account to continue.</span>
+      <button class="btn btn-primary btn-sm" onclick="signIn()" style="margin-left:auto;flex-shrink:0">Sign in with Microsoft</button>`;
     return;
   }
 
-  // Step 2: config list + load config
+  // Already signed in — get token and connect
+  banner.className = 'conn-banner loading';
+  banner.innerHTML = `<div class="spinner dark"></div><span>Connecting to SharePoint…</span>`;
+  try {
+    accessToken = await getToken();
+    await loadEntityTypes();
+    await loadSpConfig();
+    const acct = accounts[0];
+    banner.className = 'conn-banner ok';
+    banner.innerHTML = `<div class="conn-dot"></div>
+      <span>Connected · ${acct.name || acct.username}</span>
+      <button class="btn btn-ghost btn-sm" onclick="signOut()" style="margin-left:auto;flex-shrink:0;font-size:11px">Sign out</button>`;
+  } catch(e) {
+    banner.className = 'conn-banner error';
+    banner.innerHTML = `<div class="conn-dot"></div><span>Connection failed: ${e.message}</span>
+      <button class="btn btn-primary btn-sm" onclick="connectSP()" style="margin-left:auto;flex-shrink:0">Retry</button>`;
+  }
+}
+
+async function signIn() {
+  try {
+    await msalApp.loginPopup({ scopes: SP_SCOPE });
+    connectSP();
+  } catch(e) {
+    toast('Sign in failed or was cancelled.', 'err');
+  }
+}
+
+function signOut() {
+  msalApp.logoutPopup();
+  location.reload();
+}
+
+async function loadEntityTypes() {
+  const hdrs = await authHeaders();
+  // Submissions list
+  const r1 = await fetch(
+    `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_LIST)}')?$select=ListItemEntityTypeFullName`,
+    { headers: hdrs }
+  );
+  if (!r1.ok) throw new Error(`Submissions list not found. Check Setup Guide.`);
+  entityType = (await r1.json()).d.ListItemEntityTypeFullName;
+  spReady = true;
+  // Config list
   try {
     const r2 = await fetch(
       `${SP_SITE}/_api/web/lists/getbytitle('${encodeURIComponent(SP_CFG_LIST)}')?$select=ListItemEntityTypeFullName`,
-      { credentials:'include', headers: SP_HEADERS }
+      { headers: hdrs }
     );
-    if (!r2.ok) {
-      const errData = await r2.json().catch(()=>({}));
-      throw new Error(errData?.error?.message?.value || `HTTP ${r2.status}`);
+    if (r2.ok) {
+      cfgEntityType = (await r2.json()).d.ListItemEntityTypeFullName;
+      spCfgReady = true;
     }
-    const d2 = await r2.json();
-    cfgEntityType = d2.d.ListItemEntityTypeFullName;
-    spCfgReady = true;
-    await loadSpConfig();  // load config from SharePoint
-  } catch(e) {
-    spCfgReady = false;
-    // Config list missing — not fatal, fall back to local config
-    banner.className = 'conn-banner error';
-    if (e.message.includes('does not exist')) {
-      banner.innerHTML = `<div class="conn-dot"></div>
-        <span>Config list "<strong>${SP_CFG_LIST}</strong>" not found. Create it (see Setup Guide) so config syncs across users. Using local config for now.</span>`;
-    } else {
-      banner.innerHTML = `<div class="conn-dot"></div>
-        <span>Connected to submissions list but config list failed: ${e.message}</span>`;
-    }
-    syncSelects(); renderCfg();
-    return;
-  }
-
-  banner.className = 'conn-banner ok';
-  banner.innerHTML = `<div class="conn-dot"></div><span>Connected to SharePoint · config &amp; submissions loaded</span>`;
+  } catch(e) { spCfgReady = false; }
 }
 
 /* ── Load config from SharePoint ── */
 async function loadSpConfig() {
   const url = `${SP_CFG_API}?$select=Id,ConfigJSON&$top=1&$orderby=Created desc`;
-  const r = await fetch(url, { credentials:'include', headers: SP_HEADERS });
+  const hdrs = await authHeaders();
+  const r = await fetch(url, { headers: hdrs });
   if (!r.ok) throw new Error(`Config fetch failed: HTTP ${r.status}`);
   const d = await r.json();
   if (d.d.results.length) {
@@ -614,28 +666,21 @@ async function saveSpConfig() {
     const payload = JSON.stringify(getCfg());
     if (spCfgItemId) {
       // Update existing item
+      const updHdrs = await authHeaders({
+        'Content-Type':  'application/json;odata=verbose',
+        'X-RequestDigest': digest,
+        'X-HTTP-Method': 'MERGE',
+        'IF-MATCH':      '*'
+      });
       await fetch(`${SP_CFG_API}(${spCfgItemId})`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Accept':          'application/json;odata=verbose',
-          'Content-Type':    'application/json;odata=verbose',
-          'X-RequestDigest': digest,
-          'X-HTTP-Method':   'MERGE',
-          'IF-MATCH':        '*'
-        },
+        method: 'POST', headers: updHdrs,
         body: JSON.stringify({ '__metadata':{ 'type': cfgEntityType }, 'ConfigJSON': payload })
       });
     } else {
       // Create first item
+      const crtHdrs = await authHeaders({ 'Content-Type': 'application/json;odata=verbose', 'X-RequestDigest': digest });
       const r = await fetch(SP_CFG_API, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Accept':          'application/json;odata=verbose',
-          'Content-Type':    'application/json;odata=verbose',
-          'X-RequestDigest': digest,
-        },
+        method: 'POST', headers: crtHdrs,
         body: JSON.stringify({ '__metadata':{ 'type': cfgEntityType }, 'Title': 'config', 'ConfigJSON': payload })
       });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -658,7 +703,8 @@ async function fetchSubs(quarter, teamId) {
   if (teamId)  filters.push(`TeamID eq '${teamId.replace(/'/g,"''")}'`);
   const fstr = filters.length ? `&$filter=${filters.join(' and ')}` : '';
   const url = `${SP_API}?$select=Id,Title,Quarter,TeamID,TeamName,SubmittedAt,InitiativesJSON,ReportURL&$orderby=Created desc${fstr}`;
-  const r = await fetch(url, { credentials:'include', headers: SP_HEADERS });
+  const cfgHdrs = await authHeaders();
+  const r = await fetch(url, { headers: cfgHdrs });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   const d = await r.json();
   return d.d.results.map(item => ({
@@ -685,16 +731,11 @@ async function postSub(sub) {
     'ReportURL':       sub.reportUrl || '',
     'InitiativesJSON': JSON.stringify(sub.initiatives)
   };
-  const r = await fetch(SP_API, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Accept':          'application/json;odata=verbose',
-      'Content-Type':    'application/json;odata=verbose',
-      'X-RequestDigest': digest
-    },
-    body: JSON.stringify(body)
+  const postHdrs = await authHeaders({
+    'Content-Type':    'application/json;odata=verbose',
+    'X-RequestDigest': digest
   });
+  const r = await fetch(SP_API, { method:'POST', headers: postHdrs, body: JSON.stringify(body) });
   if (!r.ok) {
     const err = await r.json().catch(()=>({}));
     throw new Error(err?.error?.message?.value || `HTTP ${r.status}`);
@@ -704,15 +745,8 @@ async function postSub(sub) {
 /* ── Delete submission ── */
 async function deleteSub(id) {
   const digest = await getDigest();
-  const r = await fetch(`${SP_API}(${id})`, {
-    method: 'DELETE',
-    credentials: 'include',
-    headers: {
-      'Accept':          'application/json;odata=verbose',
-      'X-RequestDigest': digest,
-      'IF-MATCH':        '*'
-    }
-  });
+  const delHdrs = await authHeaders({ 'X-RequestDigest': digest, 'IF-MATCH': '*' });
+  const r = await fetch(`${SP_API}(${id})`, { method:'DELETE', headers: delHdrs });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
 }
 
@@ -965,22 +999,17 @@ async function submitReport(){
    SHAREPOINT REPORT UPLOAD
 ════════════════════════════════════ */
 async function ensureReportsFolder() {
+  const fldHdrs = await authHeaders();
   const checkUrl = `${SP_SITE}/_api/web/GetFolderByServerRelativeUrl('${encodeURIComponent(SP_REPORTS_FOLDER)}')`;
-  const r = await fetch(checkUrl, { credentials:'include', headers: SP_HEADERS });
+  const r = await fetch(checkUrl, { headers: fldHdrs });
   if (!r.ok) {
-    // Folder doesn't exist — create it
     const digest = await getDigest();
+    const mkHdrs = await authHeaders({ 'Content-Type': 'application/json;odata=verbose', 'X-RequestDigest': digest });
     const cr = await fetch(`${SP_SITE}/_api/web/folders`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Accept':          'application/json;odata=verbose',
-        'Content-Type':    'application/json;odata=verbose',
-        'X-RequestDigest': digest
-      },
+      method: 'POST', headers: mkHdrs,
       body: JSON.stringify({ '__metadata':{ 'type':'SP.Folder' }, 'ServerRelativeUrl': SP_REPORTS_FOLDER })
     });
-    if (!cr.ok) throw new Error('Could not create P2LT Reports folder in document library.');
+    if (!cr.ok) throw new Error('Could not create reports folder in document library.');
   }
 }
 
@@ -990,16 +1019,8 @@ async function uploadReportToSP(sub) {
   const fileName   = `${sub.teamName.replace(/[^a-zA-Z0-9]/g,'-')}_${sub.quarter.replace(/[^a-zA-Z0-9]/g,'-')}.html`;
   const digest     = await getDigest();
   const uploadUrl  = `${SP_SITE}/_api/web/GetFolderByServerRelativeUrl('${encodeURIComponent(SP_REPORTS_FOLDER)}')/Files/add(overwrite=true,url='${encodeURIComponent(fileName)}')`;
-  const r = await fetch(uploadUrl, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Accept':          'application/json;odata=verbose',
-      'X-RequestDigest': digest,
-      'Content-Type':    'text/html'
-    },
-    body: reportHtml
-  });
+  const upHdrs = await authHeaders({ 'Content-Type': 'text/html', 'X-RequestDigest': digest });
+  const r = await fetch(uploadUrl, { method:'POST', headers: upHdrs, body: reportHtml });
   if (!r.ok) {
     const err = await r.json().catch(()=>({}));
     throw new Error(err?.error?.message?.value || `File upload failed: HTTP ${r.status}`);
