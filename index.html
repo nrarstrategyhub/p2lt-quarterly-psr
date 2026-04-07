@@ -596,33 +596,30 @@ function resetConfig(){ if(!confirm('Reset to default teams and initiatives?')) 
 /* ══════════════════════════════════════
    EXPORT CONFIGURED FILE
 ══════════════════════════════════════ */
-function exportConfigured(){
+async function exportConfigured(){
   const cfg=getCfg();
-  // Read the current page source and bake the config directly into it
-  const currentHTML=document.documentElement.outerHTML;
-  // Replace the DEFAULT_CFG definition with the current config baked in
-  const cfgJSON=JSON.stringify(cfg,null,2);
-  const newCfgBlock=`const DEFAULT_CFG = ${cfgJSON};`;
-  // Also inject a script that pre-populates localStorage on first load
-  const injectScript=`<script>
-/* Pre-configured by admin — do not edit this block */
-(function(){
-  var cfg=${JSON.stringify(cfg)};
-  localStorage.setItem('p2_cfg', JSON.stringify(cfg));
-})();
-<\/script>`;
-  // Ensure submit tab is always active in exported file regardless of current tab
-  let exported = currentHTML
-    .replace('</head>', injectScript+'</head>')
-    .replace(/id="view-submit" class="view[^"]*"/g, 'id="view-submit" class="view active"')
-    .replace(/id="view-config" class="view[^"]*"/g, 'id="view-config" class="view"')
-    .replace(/onclick="switchTab\('submit'\)"[^>]*class="[^"]*"/g, m => m.replace(/class="[^"]*"/, 'class="nav-tab active"'))
-    .replace(/onclick="switchTab\('config'\)"[^>]*class="[^"]*"/g, m => m.replace(/class="[^"]*"/, 'class="nav-tab"'));
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([exported],{type:'text/html'}));
-  a.download='p2lt-dashboard-configured.html';
-  a.click();
-  toast('Configured file exported — rename to index.html and upload to GitHub.');
+  try {
+    // Fetch the raw source file so we can do a proper text replacement
+    const resp = await fetch(window.location.href);
+    let src = await resp.text();
+    // Replace DEFAULT_CFG with the baked-in config
+    src = src.replace(
+      /const DEFAULT_CFG = \[[\s\S]*?\];/,
+      'const DEFAULT_CFG = ' + JSON.stringify(cfg) + ';'
+    );
+    // Remove any previously injected config block
+    src = src.replace(/<script>\s*\/\* Pre-configured[\s\S]*?<\/script>\s*/g, '');
+    // Ensure Submit tab is active by default
+    src = src.replace('id="view-config" class="view active"','id="view-config" class="view"');
+    src = src.replace('id="view-submit" class="view"','id="view-submit" class="view active"');
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([src],{type:'text/html'}));
+    a.download='p2lt-dashboard-configured.html';
+    a.click();
+    toast('Configured file exported — rename to index.html and upload to GitHub.');
+  } catch(e) {
+    toast('Export failed: '+e.message+'. Try opening the file from a web server rather than locally.','err');
+  }
 }
 
 /* ══════════════════════════════════════
