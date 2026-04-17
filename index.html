@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>P2LT Quarterly Status Reports</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&amp;display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -185,8 +185,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="logo-sub">P2 Leadership Team · Natural Resources Access Regulator</div>
   </div>
   <nav class="nav">
-    <div class="nav-tab active" onclick="switchTab('submit')">📝&nbsp; Submit Report</div>
-    <div class="nav-tab" onclick="switchTab('config')">⚙️&nbsp; Configure</div>
+    <div class="nav-tab" onclick="switchTab('submit')">📝&nbsp; Submit Report</div>
+    <div class="nav-tab active" onclick="switchTab('config')">⚙️&nbsp; Configure</div>
   </nav>
 </header>
 
@@ -203,22 +203,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
 
       <!-- Progress -->
-      <div class="wiz-prog" id="wiz-prog" style="display:none">
+      <div class="wiz-prog" id="wiz-prog" style="display: block;">
         <div class="wiz-prog-meta">
-          <span class="wiz-prog-label" id="prog-label">—</span>
-          <span class="wiz-prog-pct" id="prog-pct">0%</span>
+          <span class="wiz-prog-label" id="prog-label">Initiative 1 of 5</span>
+          <span class="wiz-prog-pct" id="prog-pct">20%</span>
         </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+        <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width: 20%;"></div></div>
       </div>
 
       <!-- Step 0 -->
-      <div class="wiz-step active card step0" id="step-0">
+      <div class="wiz-step card step0" id="step-0">
         <div class="step0-title">Let's get started</div>
         <div class="step0-sub">Select your team and the reporting quarter to begin.</div>
         <div class="step0-grid">
           <div>
             <label class="label">Your Team</label>
-            <select class="select" id="sel-team"><option value="">— Select team —</option></select>
+            <select class="select" id="sel-team"><option value="">— Select team —</option><option value="strategic-policy">Strategic Policy</option><option value="economics">Economics</option><option value="performance-analytics-ai">Performance, Analytics &amp; AI</option><option value="strategic-finance">Strategic Finance</option><option value="strategic-projects-planning">Strategic Projects &amp; Planning</option><option value="services-assurance">Services &amp; Assurance</option></select>
           </div>
           <div>
             <label class="label">Reporting Quarter</label>
@@ -237,7 +237,192 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
 
       <!-- Initiative steps -->
-      <div id="init-steps"></div>
+      <div id="init-steps"><div class="wiz-step card init-step active" id="step-init-1">
+      <div class="init-badge">Initiative 1 of 5</div>
+      <div class="init-name">Strategic planning</div>
+      <div class="init-desc-box">Support regulatory plan implementation which guides and aligns operational activities to deliver on our Strategic Outcomes.​</div>
+      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
+      <div class="rag-grid">
+        <div class="rag-opt"><input type="radio" class="rg" name="rag-1" id="rg-1-g" value="GREEN" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="ra" name="rag-1" id="rg-1-a" value="AMBER" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rr" name="rag-1" id="rg-1-r" value="RED" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rs" name="rag-1" id="rg-1-s" value="NOT_STARTED" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rb" name="rag-1" id="rg-1-b" value="COMPLETED" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
+      </div>
+      <div class="cond" id="cond-g-1">
+        <div class="cond-label">✅ Achievements this quarter</div>
+        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
+        <textarea class="textarea g" id="txt-g-1" placeholder="• Delivered X
+• Completed Y
+• Status changed from…"></textarea>
+      </div>
+      <div class="cond" id="cond-a-1">
+        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
+        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
+        <textarea class="textarea a" id="txt-a-1" placeholder="• Issue: describe the risk
+• Recovery action 1
+• Recovery action 2
+• Target date to return to green"></textarea>
+      </div>
+      <div class="cond" id="cond-s-1">
+        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
+        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
+        <textarea class="textarea" id="txt-s-1" placeholder="• Planned start date: 
+• Blockers or dependencies: 
+• Any other context:"></textarea>
+      </div>
+      <div class="wiz-nav">
+        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
+        <button class="btn btn-primary" onclick="next(1)">Next →</button>
+      </div></div><div class="wiz-step card init-step" id="step-init-2">
+      <div class="init-badge">Initiative 2 of 5</div>
+      <div class="init-name">MRIT execution </div>
+      <div class="init-desc-box">Contribute to NRAR’s response to MRIT recommendations and support quality assurance frameworks to deliver projects to ensure NRAR is maturing towards a world-class regulator.​</div>
+      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
+      <div class="rag-grid">
+        <div class="rag-opt"><input type="radio" class="rg" name="rag-2" id="rg-2-g" value="GREEN" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="ra" name="rag-2" id="rg-2-a" value="AMBER" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rr" name="rag-2" id="rg-2-r" value="RED" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rs" name="rag-2" id="rg-2-s" value="NOT_STARTED" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rb" name="rag-2" id="rg-2-b" value="COMPLETED" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
+      </div>
+      <div class="cond" id="cond-g-2">
+        <div class="cond-label">✅ Achievements this quarter</div>
+        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
+        <textarea class="textarea g" id="txt-g-2" placeholder="• Delivered X
+• Completed Y
+• Status changed from…"></textarea>
+      </div>
+      <div class="cond" id="cond-a-2">
+        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
+        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
+        <textarea class="textarea a" id="txt-a-2" placeholder="• Issue: describe the risk
+• Recovery action 1
+• Recovery action 2
+• Target date to return to green"></textarea>
+      </div>
+      <div class="cond" id="cond-s-2">
+        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
+        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
+        <textarea class="textarea" id="txt-s-2" placeholder="• Planned start date: 
+• Blockers or dependencies: 
+• Any other context:"></textarea>
+      </div>
+      <div class="wiz-nav">
+        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
+        <button class="btn btn-primary" onclick="next(2)">Next →</button>
+      </div></div><div class="wiz-step card init-step" id="step-init-3">
+      <div class="init-badge">Initiative 3 of 5</div>
+      <div class="init-name">PMO delivery</div>
+      <div class="init-desc-box">Supporting PMs delivering projects in line with project management plan and ensuring alignment with regulatory plan outcomes.​ Improving skills of PMs by complying to PM best practices and adopting PPM tool (SPACE) to improve project delivery. ​Contributing to project delivery predictability through regular assessment of project health and quality reviews and reporting consistently. ​Ensuring effective governance through stage gate reviews and effective reporting of project delivery performance metrics.​</div>
+      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
+      <div class="rag-grid">
+        <div class="rag-opt"><input type="radio" class="rg" name="rag-3" id="rg-3-g" value="GREEN" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="ra" name="rag-3" id="rg-3-a" value="AMBER" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rr" name="rag-3" id="rg-3-r" value="RED" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rs" name="rag-3" id="rg-3-s" value="NOT_STARTED" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rb" name="rag-3" id="rg-3-b" value="COMPLETED" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
+      </div>
+      <div class="cond" id="cond-g-3">
+        <div class="cond-label">✅ Achievements this quarter</div>
+        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
+        <textarea class="textarea g" id="txt-g-3" placeholder="• Delivered X
+• Completed Y
+• Status changed from…"></textarea>
+      </div>
+      <div class="cond" id="cond-a-3">
+        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
+        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
+        <textarea class="textarea a" id="txt-a-3" placeholder="• Issue: describe the risk
+• Recovery action 1
+• Recovery action 2
+• Target date to return to green"></textarea>
+      </div>
+      <div class="cond" id="cond-s-3">
+        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
+        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
+        <textarea class="textarea" id="txt-s-3" placeholder="• Planned start date: 
+• Blockers or dependencies: 
+• Any other context:"></textarea>
+      </div>
+      <div class="wiz-nav">
+        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
+        <button class="btn btn-primary" onclick="next(3)">Next →</button>
+      </div></div><div class="wiz-step card init-step" id="step-init-4">
+      <div class="init-badge">Initiative 4 of 5</div>
+      <div class="init-name">Enterprise risk management – governance &amp; decision making</div>
+      <div class="init-desc-box">Revise, align and integrate the risk framework with all related functions &amp; processes while meeting all obligations so it is fit for purpose for NRAR as an independent risk based and outcomes focussed based regulator. ​Appoint an audit and risk committee in line with NSW Treasury Requirements​ Develop new risk appetite statements based on new framework ​ Assign &amp; align accountabilities , roles &amp; responsibilities for risk</div>
+      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
+      <div class="rag-grid">
+        <div class="rag-opt"><input type="radio" class="rg" name="rag-4" id="rg-4-g" value="GREEN" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="ra" name="rag-4" id="rg-4-a" value="AMBER" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rr" name="rag-4" id="rg-4-r" value="RED" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rs" name="rag-4" id="rg-4-s" value="NOT_STARTED" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rb" name="rag-4" id="rg-4-b" value="COMPLETED" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
+      </div>
+      <div class="cond" id="cond-g-4">
+        <div class="cond-label">✅ Achievements this quarter</div>
+        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
+        <textarea class="textarea g" id="txt-g-4" placeholder="• Delivered X
+• Completed Y
+• Status changed from…"></textarea>
+      </div>
+      <div class="cond" id="cond-a-4">
+        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
+        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
+        <textarea class="textarea a" id="txt-a-4" placeholder="• Issue: describe the risk
+• Recovery action 1
+• Recovery action 2
+• Target date to return to green"></textarea>
+      </div>
+      <div class="cond" id="cond-s-4">
+        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
+        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
+        <textarea class="textarea" id="txt-s-4" placeholder="• Planned start date: 
+• Blockers or dependencies: 
+• Any other context:"></textarea>
+      </div>
+      <div class="wiz-nav">
+        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
+        <button class="btn btn-primary" onclick="next(4)">Next →</button>
+      </div></div><div class="wiz-step card init-step" id="step-init-5">
+      <div class="init-badge">Initiative 5 of 5</div>
+      <div class="init-name">Enterprise &amp; operational risk management capability</div>
+      <div class="init-desc-box">Assign and train personnel including the board, ELT, Managers and risk champions across the organisation (team, branch, project level)​</div>
+      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
+      <div class="rag-grid">
+        <div class="rag-opt"><input type="radio" class="rg" name="rag-5" id="rg-5-g" value="GREEN" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="ra" name="rag-5" id="rg-5-a" value="AMBER" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rr" name="rag-5" id="rg-5-r" value="RED" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rs" name="rag-5" id="rg-5-s" value="NOT_STARTED" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
+        <div class="rag-opt"><input type="radio" class="rb" name="rag-5" id="rg-5-b" value="COMPLETED" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
+      </div>
+      <div class="cond" id="cond-g-5">
+        <div class="cond-label">✅ Achievements this quarter</div>
+        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
+        <textarea class="textarea g" id="txt-g-5" placeholder="• Delivered X
+• Completed Y
+• Status changed from…"></textarea>
+      </div>
+      <div class="cond" id="cond-a-5">
+        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
+        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
+        <textarea class="textarea a" id="txt-a-5" placeholder="• Issue: describe the risk
+• Recovery action 1
+• Recovery action 2
+• Target date to return to green"></textarea>
+      </div>
+      <div class="cond" id="cond-s-5">
+        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
+        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
+        <textarea class="textarea" id="txt-s-5" placeholder="• Planned start date: 
+• Blockers or dependencies: 
+• Any other context:"></textarea>
+      </div>
+      <div class="wiz-nav">
+        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
+        <button class="btn btn-primary" onclick="next(5)">Next →</button>
+      </div></div></div>
 
       <!-- Review step -->
       <div class="wiz-step" id="step-review">
@@ -301,7 +486,430 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         Fill in all team names, initiative titles and descriptions below — this is for your eyes only and nothing is shared anywhere. When done, click <strong>Export configured file</strong>. Upload that file to GitHub as <code style="background:rgba(0,0,0,.07);padding:1px 5px;border-radius:4px;font-size:12px">index.html</code> — that's the version managers will see.
       </div>
     </div>
-    <div class="cfg-grid" id="cfg-grid"></div>
+    <div class="cfg-grid" id="cfg-grid">
+    <div class="cfg-card">
+      <div class="cfg-hd">
+        <input class="cfg-name-input" value="Strategic Policy" onchange="updateTeamName(0,this.value)" placeholder="Team name">
+        <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
+          <div class="cfg-badge">9 initiatives</div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.18);color:white;padding:3px 9px;border-radius:6px" onclick="removeTeam(0)">✕</button>
+        </div>
+      </div>
+      <div class="cfg-body">
+        <ul class="cfg-init-list">
+          
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">1</div>
+                <input class="cfg-init-input" value="Enforcement Bill implementation" onchange="updateInitName(0,0,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(0,0)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(0,0,this.value)" placeholder="Short description shown to managers in the form (optional)">Coordination of resources and process development for NRAR operations to exercise new and enhanced regulatory functions.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">2</div>
+                <input class="cfg-init-input" value="Audit Office response" onchange="updateInitName(0,1,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(0,1)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(0,1,this.value)" placeholder="Short description shown to managers in the form (optional)">Coordination of response and actions in response to Audit Office findings.</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">3</div>
+                <input class="cfg-init-input" value="Development of interagency agreements" onchange="updateInitName(0,2,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(0,2)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(0,2,this.value)" placeholder="Short description shown to managers in the form (optional)">Develop new MOUs with other regulators to enhance our regulatory effectiveness.</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">4</div>
+                <input class="cfg-init-input" value="Advocating for improvements to the legislative framework​" onchange="updateInitName(0,3,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(0,3)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(0,3,this.value)" placeholder="Short description shown to managers in the form (optional)">Initiate and lead development of policy proposals. Coordinate responses to DCCEEW policy proposals.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">5</div>
+                <input class="cfg-init-input" value="Policy renewal" onchange="updateInitName(0,4,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(0,4)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(0,4,this.value)" placeholder="Short description shown to managers in the form (optional)">Major updates to key NRAR policies- investigations manual, authorised officer policy, compliance revenue policy and enforceable undertaking guidelines. </textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">6</div>
+                <input class="cfg-init-input" value="Improve transparency of high-use/high-complexity water take​" onchange="updateInitName(0,5,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(0,5)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(0,5,this.value)" placeholder="Short description shown to managers in the form (optional)">Develop program of work to improve transparency and improve regulation of water take by mining and​ develop attestation and attribution trial for FY27.</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">7</div>
+                <input class="cfg-init-input" value="Methods to estimate water take" onchange="updateInitName(0,6,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(0,6)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(0,6,this.value)" placeholder="Short description shown to managers in the form (optional)">Develop and implement methodologies for estimating water take where metering is not available.</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">8</div>
+                <input class="cfg-init-input" value="Improve enforceability and clarity on “grey areas” of water law and policy" onchange="updateInitName(0,7,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(0,7)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(0,7,this.value)" placeholder="Short description shown to managers in the form (optional)">Work with DCCEEW on policy solutions to longstanding problem areas of water laws; mixed rights dams, bore drillers, excluded works, irrigation corps, private water trusts.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">9</div>
+                <input class="cfg-init-input" value="Analysis support for key operational projects​" onchange="updateInitName(0,8,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(0,8)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(0,8,this.value)" placeholder="Short description shown to managers in the form (optional)">Support for EP2 WAL analysis, I&amp;E specified measure library, metering works classification definitions.​</textarea>
+              </div>
+            </li>
+        </ul>
+        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="addInit(0)">+ Add initiative</button>
+      </div>
+    </div>
+    <div class="cfg-card">
+      <div class="cfg-hd">
+        <input class="cfg-name-input" value="Economics" onchange="updateTeamName(1,this.value)" placeholder="Team name">
+        <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
+          <div class="cfg-badge">5 initiatives</div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.18);color:white;padding:3px 9px;border-radius:6px" onclick="removeTeam(1)">✕</button>
+        </div>
+      </div>
+      <div class="cfg-body">
+        <ul class="cfg-init-list">
+          
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">1</div>
+                <input class="cfg-init-input" value="NRARs Future Funding Options​" onchange="updateInitName(1,0,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(1,0)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(1,0,this.value)" placeholder="Short description shown to managers in the form (optional)">Board presented with ​viable options and endorse the NRAR​ preferred funding model </textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">2</div>
+                <input class="cfg-init-input" value="WAMC Price Framework Review​" onchange="updateInitName(1,1,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(1,1)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(1,1,this.value)" placeholder="Short description shown to managers in the form (optional)">Broaden possibilities for NRAR future funding options​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">3</div>
+                <input class="cfg-init-input" value="Shape IPART measures for future funding success​" onchange="updateInitName(1,2,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(1,2)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(1,2,this.value)" placeholder="Short description shown to managers in the form (optional)">​
+
+1. What is our target​
+2. How we achieve it</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">4</div>
+                <input class="cfg-init-input" value="Document control uplift​" onchange="updateInitName(1,3,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(1,3)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(1,3,this.value)" placeholder="Short description shown to managers in the form (optional)">Historic documents (pre 2023) retrieved and catalogued in searchable form ​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">5</div>
+                <input class="cfg-init-input" value="WAMC structural/governance reform​" onchange="updateInitName(1,4,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(1,4)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(1,4,this.value)" placeholder="Short description shown to managers in the form (optional)">NRAR Board endorsed preferred relation reflected in the WAMC Structure review final report ​</textarea>
+              </div>
+            </li>
+        </ul>
+        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="addInit(1)">+ Add initiative</button>
+      </div>
+    </div>
+    <div class="cfg-card">
+      <div class="cfg-hd">
+        <input class="cfg-name-input" value="Performance, Analytics &amp; AI" onchange="updateTeamName(2,this.value)" placeholder="Team name">
+        <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
+          <div class="cfg-badge">4 initiatives</div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.18);color:white;padding:3px 9px;border-radius:6px" onclick="removeTeam(2)">✕</button>
+        </div>
+      </div>
+      <div class="cfg-body">
+        <ul class="cfg-init-list">
+          
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">1</div>
+                <input class="cfg-init-input" value="Output-based KPI review​" onchange="updateInitName(2,0,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(2,0)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(2,0,this.value)" placeholder="Short description shown to managers in the form (optional)">Continue a comprehensive review of all output-based KPIs to eliminate ambiguity and redefine them with clear, measurable criteria for better alignment with business objectives.</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">2</div>
+                <input class="cfg-init-input" value="Outcome-based reporting​" onchange="updateInitName(2,1,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(2,1)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(2,1,this.value)" placeholder="Short description shown to managers in the form (optional)">Deliver enterprise outcome-based reporting dashboards that consolidate and visualise NRAR’s outcome KPIs to support transparent, informed decision-making.</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">3</div>
+                <input class="cfg-init-input" value="AI-driven forecasting​" onchange="updateInitName(2,2,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(2,2)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(2,2,this.value)" placeholder="Short description shown to managers in the form (optional)">Develop and apply artificial intelligence models to predict future enterprise performance such as anticipated case volumes and SARs where operational teams identify clear decision-making value.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">4</div>
+                <input class="cfg-init-input" value="Reporting modernisation​" onchange="updateInitName(2,3,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(2,3)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(2,3,this.value)" placeholder="Short description shown to managers in the form (optional)">Decommission legacy dashboards and replace them with validated, documented enterprise dashboards, including new operational metric dashboards where they do not currently exist.​</textarea>
+              </div>
+            </li>
+        </ul>
+        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="addInit(2)">+ Add initiative</button>
+      </div>
+    </div>
+    <div class="cfg-card">
+      <div class="cfg-hd">
+        <input class="cfg-name-input" value="Strategic Finance" onchange="updateTeamName(3,this.value)" placeholder="Team name">
+        <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
+          <div class="cfg-badge">5 initiatives</div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.18);color:white;padding:3px 9px;border-radius:6px" onclick="removeTeam(3)">✕</button>
+        </div>
+      </div>
+      <div class="cfg-body">
+        <ul class="cfg-init-list">
+          
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">1</div>
+                <input class="cfg-init-input" value="Budget management​" onchange="updateInitName(3,0,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(3,0)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(3,0,this.value)" placeholder="Short description shown to managers in the form (optional)">Monitor NRAR’s financial data and provide advice or where required take action to meet budget control limits. ​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">2</div>
+                <input class="cfg-init-input" value="Timely monthly reporting" onchange="updateInitName(3,1,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(3,1)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(3,1,this.value)" placeholder="Short description shown to managers in the form (optional)">Deliver a suite of monthly financial reports for teams, branches, and program leaders.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">3</div>
+                <input class="cfg-init-input" value="Annual financial statements audit​" onchange="updateInitName(3,2,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(3,2)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(3,2,this.value)" placeholder="Short description shown to managers in the form (optional)">Coordinate the successful completion of NRAR’s Annual Financial Statements audit.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">4</div>
+                <input class="cfg-init-input" value="Annual reporting" onchange="updateInitName(3,3,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(3,3)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(3,3,this.value)" placeholder="Short description shown to managers in the form (optional)">Ensure that NRAR meets its new annual reporting requirements and all documents are prepared in accordance with explicit criteria​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">5</div>
+                <input class="cfg-init-input" value="Amalgamation of central finance data ​" onchange="updateInitName(3,4,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(3,4)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(3,4,this.value)" placeholder="Short description shown to managers in the form (optional)">Ensure consistency between agency data and centralised finance systems​</textarea>
+              </div>
+            </li>
+        </ul>
+        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="addInit(3)">+ Add initiative</button>
+      </div>
+    </div>
+    <div class="cfg-card">
+      <div class="cfg-hd">
+        <input class="cfg-name-input" value="Strategic Projects &amp; Planning" onchange="updateTeamName(4,this.value)" placeholder="Team name">
+        <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
+          <div class="cfg-badge">5 initiatives</div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.18);color:white;padding:3px 9px;border-radius:6px" onclick="removeTeam(4)">✕</button>
+        </div>
+      </div>
+      <div class="cfg-body">
+        <ul class="cfg-init-list">
+          
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">1</div>
+                <input class="cfg-init-input" value="Strategic planning" onchange="updateInitName(4,0,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(4,0)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(4,0,this.value)" placeholder="Short description shown to managers in the form (optional)">Support regulatory plan implementation which guides and aligns operational activities to deliver on our Strategic Outcomes.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">2</div>
+                <input class="cfg-init-input" value="MRIT execution " onchange="updateInitName(4,1,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(4,1)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(4,1,this.value)" placeholder="Short description shown to managers in the form (optional)">Contribute to NRAR’s response to MRIT recommendations and support quality assurance frameworks to deliver projects to ensure NRAR is maturing towards a world-class regulator.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">3</div>
+                <input class="cfg-init-input" value="PMO delivery" onchange="updateInitName(4,2,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(4,2)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(4,2,this.value)" placeholder="Short description shown to managers in the form (optional)">Supporting PMs delivering projects in line with project management plan and ensuring alignment with regulatory plan outcomes.​ Improving skills of PMs by complying to PM best practices and adopting PPM tool (SPACE) to improve project delivery. ​Contributing to project delivery predictability through regular assessment of project health and quality reviews and reporting consistently. ​Ensuring effective governance through stage gate reviews and effective reporting of project delivery performance metrics.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">4</div>
+                <input class="cfg-init-input" value="Enterprise risk management – governance &amp; decision making" onchange="updateInitName(4,3,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(4,3)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(4,3,this.value)" placeholder="Short description shown to managers in the form (optional)">Revise, align and integrate the risk framework with all related functions &amp; processes while meeting all obligations so it is fit for purpose for NRAR as an independent risk based and outcomes focussed based regulator. ​Appoint an audit and risk committee in line with NSW Treasury Requirements​ Develop new risk appetite statements based on new framework ​ Assign &amp; align accountabilities , roles &amp; responsibilities for risk</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">5</div>
+                <input class="cfg-init-input" value="Enterprise &amp; operational risk management capability" onchange="updateInitName(4,4,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(4,4)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(4,4,this.value)" placeholder="Short description shown to managers in the form (optional)">Assign and train personnel including the board, ELT, Managers and risk champions across the organisation (team, branch, project level)​</textarea>
+              </div>
+            </li>
+        </ul>
+        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="addInit(4)">+ Add initiative</button>
+      </div>
+    </div>
+    <div class="cfg-card">
+      <div class="cfg-hd">
+        <input class="cfg-name-input" value="Services &amp; Assurance" onchange="updateTeamName(5,this.value)" placeholder="Team name">
+        <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
+          <div class="cfg-badge">5 initiatives</div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.18);color:white;padding:3px 9px;border-radius:6px" onclick="removeTeam(5)">✕</button>
+        </div>
+      </div>
+      <div class="cfg-body">
+        <ul class="cfg-init-list">
+          
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">1</div>
+                <input class="cfg-init-input" value="Improve NRAR’s core processes through Elevate​" onchange="updateInitName(5,0,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(5,0)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(5,0,this.value)" placeholder="Short description shown to managers in the form (optional)">Review, simplify and update NRAR’s end‑to‑end procedures, WATERS records and process documents so staff have clear, consistent and repeatable ways of working.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">2</div>
+                <input class="cfg-init-input" value="Strengthen assurance activities​" onchange="updateInitName(5,1,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(5,1)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(5,1,this.value)" placeholder="Short description shown to managers in the form (optional)">Run targeted audits and reviews to understand what’s working, what needs fixing and why, and maintain year‑round audit readiness.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">3</div>
+                <input class="cfg-init-input" value="Simplify the QMS and Prepare for ISO 9001​" onchange="updateInitName(5,2,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(5,2)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(5,2,this.value)" placeholder="Short description shown to managers in the form (optional)">Streamline and modernise the QMS so it is practical, easy for staff to use, and fully compliant with ISO 9001 requirements — with clear awareness across NRAR of the consequences of not following quality processes.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">4</div>
+                <input class="cfg-init-input" value="Enhance frontline and operational support​" onchange="updateInitName(5,3,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(5,3)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(5,3,this.value)" placeholder="Short description shown to managers in the form (optional)">Improve frontline capability and operational responsiveness by strengthening systems, controls, performance and staff skills.​</textarea>
+              </div>
+            </li>
+            <li class="cfg-init-item">
+              <div class="cfg-init-row">
+                <div class="cfg-num">5</div>
+                <input class="cfg-init-input" value="Drive regulatory maturity and continual improvement​" onchange="updateInitName(5,4,this.value)" placeholder="Initiative name">
+                <button class="cfg-rm-btn" onclick="removeInit(5,4)">−</button>
+              </div>
+              <div style="padding-left:30px">
+                <textarea class="cfg-desc-input" rows="2" onchange="updateInitDesc(5,4,this.value)" placeholder="Short description shown to managers in the form (optional)">Lift organisational capability by using MRIT insights to guide priority improvements, simplify ways of working and increase transparency through a maturity dashboard.​</textarea>
+              </div>
+            </li>
+        </ul>
+        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="addInit(5)">+ Add initiative</button>
+      </div>
+    </div></div>
   </div>
 
 </main>
@@ -313,14 +921,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 /* ══════════════════════════════════════
    CONFIG — teams & initiatives
 ══════════════════════════════════════ */
-const DEFAULT_CFG = [
-  { id:'strategic-policy',            name:'Strategic Policy',              initiatives:inits(9)  },
-  { id:'economics',                   name:'Economics',                     initiatives:inits(5)  },
-  { id:'performance-analytics-ai',    name:'Performance, Analytics & AI',   initiatives:inits(4)  },
-  { id:'strategic-finance',           name:'Strategic Finance',             initiatives:inits(5)  },
-  { id:'strategic-projects-planning', name:'Strategic Projects & Planning', initiatives:inits(12) },
-  { id:'services-assurance',          name:'Services & Assurance',          initiatives:inits(5)  },
-];
+const DEFAULT_CFG = [{"id":"strategic-policy","name":"Strategic Policy","initiatives":[{"name":"Enforcement Bill implementation","desc":"Coordination of resources and process development for NRAR operations to exercise new and enhanced regulatory functions.​"},{"name":"Audit Office response","desc":"Coordination of response and actions in response to Audit Office findings."},{"name":"Development of interagency agreements","desc":"Develop new MOUs with other regulators to enhance our regulatory effectiveness."},{"name":"Advocating for improvements to the legislative framework​","desc":"Initiate and lead development of policy proposals. Coordinate responses to DCCEEW policy proposals.​"},{"name":"Policy renewal","desc":"Major updates to key NRAR policies- investigations manual, authorised officer policy, compliance revenue policy and enforceable undertaking guidelines. "},{"name":"Improve transparency of high-use/high-complexity water take​","desc":"Develop program of work to improve transparency and improve regulation of water take by mining and​ develop attestation and attribution trial for FY27."},{"name":"Methods to estimate water take","desc":"Develop and implement methodologies for estimating water take where metering is not available."},{"name":"Improve enforceability and clarity on “grey areas” of water law and policy","desc":"Work with DCCEEW on policy solutions to longstanding problem areas of water laws; mixed rights dams, bore drillers, excluded works, irrigation corps, private water trusts.​"},{"name":"Analysis support for key operational projects​","desc":"Support for EP2 WAL analysis, I&E specified measure library, metering works classification definitions.​"}]},{"id":"economics","name":"Economics","initiatives":[{"name":"NRARs Future Funding Options​","desc":"Board presented with ​viable options and endorse the NRAR​ preferred funding model "},{"name":"WAMC Price Framework Review​","desc":"Broaden possibilities for NRAR future funding options​"},{"name":"Shape IPART measures for future funding success​","desc":"​\n\n1. What is our target​\n2. How we achieve it"},{"name":"Document control uplift​","desc":"Historic documents (pre 2023) retrieved and catalogued in searchable form ​"},{"name":"WAMC structural/governance reform​","desc":"NRAR Board endorsed preferred relation reflected in the WAMC Structure review final report ​"}]},{"id":"performance-analytics-ai","name":"Performance, Analytics & AI","initiatives":[{"name":"Output-based KPI review​","desc":"Continue a comprehensive review of all output-based KPIs to eliminate ambiguity and redefine them with clear, measurable criteria for better alignment with business objectives."},{"name":"Outcome-based reporting​","desc":"Deliver enterprise outcome-based reporting dashboards that consolidate and visualise NRAR’s outcome KPIs to support transparent, informed decision-making."},{"name":"AI-driven forecasting​","desc":"Develop and apply artificial intelligence models to predict future enterprise performance such as anticipated case volumes and SARs where operational teams identify clear decision-making value.​"},{"name":"Reporting modernisation​","desc":"Decommission legacy dashboards and replace them with validated, documented enterprise dashboards, including new operational metric dashboards where they do not currently exist.​"}]},{"id":"strategic-finance","name":"Strategic Finance","initiatives":[{"name":"Budget management​","desc":"Monitor NRAR’s financial data and provide advice or where required take action to meet budget control limits. ​"},{"name":"Timely monthly reporting","desc":"Deliver a suite of monthly financial reports for teams, branches, and program leaders.​"},{"name":"Annual financial statements audit​","desc":"Coordinate the successful completion of NRAR’s Annual Financial Statements audit.​"},{"name":"Annual reporting","desc":"Ensure that NRAR meets its new annual reporting requirements and all documents are prepared in accordance with explicit criteria​"},{"name":"Amalgamation of central finance data ​","desc":"Ensure consistency between agency data and centralised finance systems​"}]},{"id":"strategic-projects-planning","name":"Strategic Projects & Planning","initiatives":[{"name":"Strategic planning","desc":"Support regulatory plan implementation which guides and aligns operational activities to deliver on our Strategic Outcomes.​"},{"name":"MRIT execution ","desc":"Contribute to NRAR’s response to MRIT recommendations and support quality assurance frameworks to deliver projects to ensure NRAR is maturing towards a world-class regulator.​"},{"name":"PMO delivery","desc":"Supporting PMs delivering projects in line with project management plan and ensuring alignment with regulatory plan outcomes.​ Improving skills of PMs by complying to PM best practices and adopting PPM tool (SPACE) to improve project delivery. ​Contributing to project delivery predictability through regular assessment of project health and quality reviews and reporting consistently. ​Ensuring effective governance through stage gate reviews and effective reporting of project delivery performance metrics.​"},{"name":"Enterprise risk management – governance & decision making","desc":"Revise, align and integrate the risk framework with all related functions & processes while meeting all obligations so it is fit for purpose for NRAR as an independent risk based and outcomes focussed based regulator. ​Appoint an audit and risk committee in line with NSW Treasury Requirements​ Develop new risk appetite statements based on new framework ​ Assign & align accountabilities , roles & responsibilities for risk"},{"name":"Enterprise & operational risk management capability","desc":"Assign and train personnel including the board, ELT, Managers and risk champions across the organisation (team, branch, project level)​"}]},{"id":"services-assurance","name":"Services & Assurance","initiatives":[{"name":"Improve NRAR’s core processes through Elevate​","desc":"Review, simplify and update NRAR’s end‑to‑end procedures, WATERS records and process documents so staff have clear, consistent and repeatable ways of working.​"},{"name":"Strengthen assurance activities​","desc":"Run targeted audits and reviews to understand what’s working, what needs fixing and why, and maintain year‑round audit readiness.​"},{"name":"Simplify the QMS and Prepare for ISO 9001​","desc":"Streamline and modernise the QMS so it is practical, easy for staff to use, and fully compliant with ISO 9001 requirements — with clear awareness across NRAR of the consequences of not following quality processes.​"},{"name":"Enhance frontline and operational support​","desc":"Improve frontline capability and operational responsiveness by strengthening systems, controls, performance and staff skills.​"},{"name":"Drive regulatory maturity and continual improvement​","desc":"Lift organisational capability by using MRIT insights to guide priority improvements, simplify ways of working and increase transparency through a maturity dashboard.​"}]}];
+
 function inits(n){ return Array.from({length:n},(_,i)=>({name:`Initiative ${i+1}`,desc:''})); }
 function migrate(cfg){ return cfg.map(t=>({...t,initiatives:t.initiatives.map(i=>typeof i==='string'?{name:i,desc:''}:i)})); }
 function getCfg(){ try{ return migrate(JSON.parse(localStorage.getItem('p2_cfg'))||DEFAULT_CFG); }catch{ return DEFAULT_CFG; } }
@@ -615,8 +1217,8 @@ async function exportConfigured(){
   // Remove any previously injected config block
   src = src.replace(/<script>\s*\/\* Pre-configured[\s\S]*?<\/script>\s*/g, '');
   // Ensure Submit tab is active by default
-  src = src.replace(/id="view-config" class="view[^"]*"/g, 'id="view-config" class="view"');
-  src = src.replace(/id="view-submit" class="view[^"]*"/g, 'id="view-submit" class="view active"');
+  src = src.replace(/id="view-config" class="view"]*"/g, 'id="view-config" class="view"');
+  src = src.replace(/id="view-submit" class="view active"]*"/g, 'id="view-submit" class="view active"');
   // Ensure Submit nav tab is active
   src = src.replace(/onclick="switchTab\('config'\)"[^>]*class="nav-tab[^"]*"/g, 'onclick="switchTab(\'config\')" class="nav-tab"');
   src = src.replace(/onclick="switchTab\('submit'\)"[^>]*class="nav-tab[^"]*"/g, 'onclick="switchTab(\'submit\')" class="nav-tab active"');
@@ -646,5 +1248,6 @@ syncTeamSelect();
 // Always land on Submit tab on load
 switchTab('submit');
 </script>
-</body>
-</html>
+
+
+</body></html>
