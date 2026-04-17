@@ -203,16 +203,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
 
       <!-- Progress -->
-      <div class="wiz-prog" id="wiz-prog" style="display: block;">
+      <div class="wiz-prog" id="wiz-prog" style="display:none">
         <div class="wiz-prog-meta">
-          <span class="wiz-prog-label" id="prog-label">Initiative 1 of 5</span>
-          <span class="wiz-prog-pct" id="prog-pct">20%</span>
+          <span class="wiz-prog-label" id="prog-label">—</span>
+          <span class="wiz-prog-pct" id="prog-pct">0%</span>
         </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width: 20%;"></div></div>
+        <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
       </div>
 
       <!-- Step 0 -->
-      <div class="wiz-step card step0" id="step-0">
+      <div class="wiz-step active card step0" id="step-0">
         <div class="step0-title">Let's get started</div>
         <div class="step0-sub">Select your team and the reporting quarter to begin.</div>
         <div class="step0-grid">
@@ -237,192 +237,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
 
       <!-- Initiative steps -->
-      <div id="init-steps"><div class="wiz-step card init-step active" id="step-init-1">
-      <div class="init-badge">Initiative 1 of 5</div>
-      <div class="init-name">Strategic planning</div>
-      <div class="init-desc-box">Support regulatory plan implementation which guides and aligns operational activities to deliver on our Strategic Outcomes.​</div>
-      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
-      <div class="rag-grid">
-        <div class="rag-opt"><input type="radio" class="rg" name="rag-1" id="rg-1-g" value="GREEN" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="ra" name="rag-1" id="rg-1-a" value="AMBER" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rr" name="rag-1" id="rg-1-r" value="RED" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rs" name="rag-1" id="rg-1-s" value="NOT_STARTED" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rb" name="rag-1" id="rg-1-b" value="COMPLETED" onchange="onRag(1)"><label class="rag-lbl" for="rg-1-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
-      </div>
-      <div class="cond" id="cond-g-1">
-        <div class="cond-label">✅ Achievements this quarter</div>
-        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
-        <textarea class="textarea g" id="txt-g-1" placeholder="• Delivered X
-• Completed Y
-• Status changed from…"></textarea>
-      </div>
-      <div class="cond" id="cond-a-1">
-        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
-        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
-        <textarea class="textarea a" id="txt-a-1" placeholder="• Issue: describe the risk
-• Recovery action 1
-• Recovery action 2
-• Target date to return to green"></textarea>
-      </div>
-      <div class="cond" id="cond-s-1">
-        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
-        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
-        <textarea class="textarea" id="txt-s-1" placeholder="• Planned start date: 
-• Blockers or dependencies: 
-• Any other context:"></textarea>
-      </div>
-      <div class="wiz-nav">
-        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
-        <button class="btn btn-primary" onclick="next(1)">Next →</button>
-      </div></div><div class="wiz-step card init-step" id="step-init-2">
-      <div class="init-badge">Initiative 2 of 5</div>
-      <div class="init-name">MRIT execution </div>
-      <div class="init-desc-box">Contribute to NRAR’s response to MRIT recommendations and support quality assurance frameworks to deliver projects to ensure NRAR is maturing towards a world-class regulator.​</div>
-      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
-      <div class="rag-grid">
-        <div class="rag-opt"><input type="radio" class="rg" name="rag-2" id="rg-2-g" value="GREEN" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="ra" name="rag-2" id="rg-2-a" value="AMBER" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rr" name="rag-2" id="rg-2-r" value="RED" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rs" name="rag-2" id="rg-2-s" value="NOT_STARTED" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rb" name="rag-2" id="rg-2-b" value="COMPLETED" onchange="onRag(2)"><label class="rag-lbl" for="rg-2-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
-      </div>
-      <div class="cond" id="cond-g-2">
-        <div class="cond-label">✅ Achievements this quarter</div>
-        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
-        <textarea class="textarea g" id="txt-g-2" placeholder="• Delivered X
-• Completed Y
-• Status changed from…"></textarea>
-      </div>
-      <div class="cond" id="cond-a-2">
-        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
-        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
-        <textarea class="textarea a" id="txt-a-2" placeholder="• Issue: describe the risk
-• Recovery action 1
-• Recovery action 2
-• Target date to return to green"></textarea>
-      </div>
-      <div class="cond" id="cond-s-2">
-        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
-        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
-        <textarea class="textarea" id="txt-s-2" placeholder="• Planned start date: 
-• Blockers or dependencies: 
-• Any other context:"></textarea>
-      </div>
-      <div class="wiz-nav">
-        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
-        <button class="btn btn-primary" onclick="next(2)">Next →</button>
-      </div></div><div class="wiz-step card init-step" id="step-init-3">
-      <div class="init-badge">Initiative 3 of 5</div>
-      <div class="init-name">PMO delivery</div>
-      <div class="init-desc-box">Supporting PMs delivering projects in line with project management plan and ensuring alignment with regulatory plan outcomes.​ Improving skills of PMs by complying to PM best practices and adopting PPM tool (SPACE) to improve project delivery. ​Contributing to project delivery predictability through regular assessment of project health and quality reviews and reporting consistently. ​Ensuring effective governance through stage gate reviews and effective reporting of project delivery performance metrics.​</div>
-      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
-      <div class="rag-grid">
-        <div class="rag-opt"><input type="radio" class="rg" name="rag-3" id="rg-3-g" value="GREEN" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="ra" name="rag-3" id="rg-3-a" value="AMBER" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rr" name="rag-3" id="rg-3-r" value="RED" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rs" name="rag-3" id="rg-3-s" value="NOT_STARTED" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rb" name="rag-3" id="rg-3-b" value="COMPLETED" onchange="onRag(3)"><label class="rag-lbl" for="rg-3-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
-      </div>
-      <div class="cond" id="cond-g-3">
-        <div class="cond-label">✅ Achievements this quarter</div>
-        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
-        <textarea class="textarea g" id="txt-g-3" placeholder="• Delivered X
-• Completed Y
-• Status changed from…"></textarea>
-      </div>
-      <div class="cond" id="cond-a-3">
-        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
-        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
-        <textarea class="textarea a" id="txt-a-3" placeholder="• Issue: describe the risk
-• Recovery action 1
-• Recovery action 2
-• Target date to return to green"></textarea>
-      </div>
-      <div class="cond" id="cond-s-3">
-        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
-        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
-        <textarea class="textarea" id="txt-s-3" placeholder="• Planned start date: 
-• Blockers or dependencies: 
-• Any other context:"></textarea>
-      </div>
-      <div class="wiz-nav">
-        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
-        <button class="btn btn-primary" onclick="next(3)">Next →</button>
-      </div></div><div class="wiz-step card init-step" id="step-init-4">
-      <div class="init-badge">Initiative 4 of 5</div>
-      <div class="init-name">Enterprise risk management – governance &amp; decision making</div>
-      <div class="init-desc-box">Revise, align and integrate the risk framework with all related functions &amp; processes while meeting all obligations so it is fit for purpose for NRAR as an independent risk based and outcomes focussed based regulator. ​Appoint an audit and risk committee in line with NSW Treasury Requirements​ Develop new risk appetite statements based on new framework ​ Assign &amp; align accountabilities , roles &amp; responsibilities for risk</div>
-      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
-      <div class="rag-grid">
-        <div class="rag-opt"><input type="radio" class="rg" name="rag-4" id="rg-4-g" value="GREEN" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="ra" name="rag-4" id="rg-4-a" value="AMBER" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rr" name="rag-4" id="rg-4-r" value="RED" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rs" name="rag-4" id="rg-4-s" value="NOT_STARTED" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rb" name="rag-4" id="rg-4-b" value="COMPLETED" onchange="onRag(4)"><label class="rag-lbl" for="rg-4-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
-      </div>
-      <div class="cond" id="cond-g-4">
-        <div class="cond-label">✅ Achievements this quarter</div>
-        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
-        <textarea class="textarea g" id="txt-g-4" placeholder="• Delivered X
-• Completed Y
-• Status changed from…"></textarea>
-      </div>
-      <div class="cond" id="cond-a-4">
-        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
-        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
-        <textarea class="textarea a" id="txt-a-4" placeholder="• Issue: describe the risk
-• Recovery action 1
-• Recovery action 2
-• Target date to return to green"></textarea>
-      </div>
-      <div class="cond" id="cond-s-4">
-        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
-        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
-        <textarea class="textarea" id="txt-s-4" placeholder="• Planned start date: 
-• Blockers or dependencies: 
-• Any other context:"></textarea>
-      </div>
-      <div class="wiz-nav">
-        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
-        <button class="btn btn-primary" onclick="next(4)">Next →</button>
-      </div></div><div class="wiz-step card init-step" id="step-init-5">
-      <div class="init-badge">Initiative 5 of 5</div>
-      <div class="init-name">Enterprise &amp; operational risk management capability</div>
-      <div class="init-desc-box">Assign and train personnel including the board, ELT, Managers and risk champions across the organisation (team, branch, project level)​</div>
-      <div class="init-hint">Select the RAG status, then provide a brief update below.</div>
-      <div class="rag-grid">
-        <div class="rag-opt"><input type="radio" class="rg" name="rag-5" id="rg-5-g" value="GREEN" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-g"><span class="rag-circle pip-g"></span><span class="rag-txt">On Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="ra" name="rag-5" id="rg-5-a" value="AMBER" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-a"><span class="rag-circle pip-a"></span><span class="rag-txt">At Risk</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rr" name="rag-5" id="rg-5-r" value="RED" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-r"><span class="rag-circle pip-r"></span><span class="rag-txt">Off Track</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rs" name="rag-5" id="rg-5-s" value="NOT_STARTED" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-s"><span class="rag-circle pip-s"></span><span class="rag-txt">Not Started</span></label></div>
-        <div class="rag-opt"><input type="radio" class="rb" name="rag-5" id="rg-5-b" value="COMPLETED" onchange="onRag(5)"><label class="rag-lbl" for="rg-5-b"><span class="rag-circle pip-b"></span><span class="rag-txt">Completed</span></label></div>
-      </div>
-      <div class="cond" id="cond-g-5">
-        <div class="cond-label">✅ Achievements this quarter</div>
-        <div class="cond-hint">Briefly explain why this initiative is GREEN or COMPLETED. Include 2–4 bullet points on what was delivered and what changed.</div>
-        <textarea class="textarea g" id="txt-g-5" placeholder="• Delivered X
-• Completed Y
-• Status changed from…"></textarea>
-      </div>
-      <div class="cond" id="cond-a-5">
-        <div class="cond-label">⚠️ Go-to-Green (GTG) Plan</div>
-        <div class="cond-hint">Explain why this initiative is AMBER or RED. Provide your Go-to-Green plan in 3–4 bullet points.</div>
-        <textarea class="textarea a" id="txt-a-5" placeholder="• Issue: describe the risk
-• Recovery action 1
-• Recovery action 2
-• Target date to return to green"></textarea>
-      </div>
-      <div class="cond" id="cond-s-5">
-        <div class="cond-label">🗓️ Planning &amp; Blockers</div>
-        <div class="cond-hint">Provide a brief update on this initiative's start timeline. Consider: When are you planning to start? Are there any blockers or dependencies preventing a start? Is a revised start date anticipated?</div>
-        <textarea class="textarea" id="txt-s-5" placeholder="• Planned start date: 
-• Blockers or dependencies: 
-• Any other context:"></textarea>
-      </div>
-      <div class="wiz-nav">
-        <button class="btn btn-ghost" onclick="goBack()">← Back</button>
-        <button class="btn btn-primary" onclick="next(5)">Next →</button>
-      </div></div></div>
+      <div id="init-steps"></div>
 
       <!-- Review step -->
       <div class="wiz-step" id="step-review">
